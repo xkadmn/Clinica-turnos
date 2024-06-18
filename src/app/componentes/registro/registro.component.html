@@ -1,36 +1,52 @@
 <div class="container mt-5">
-    <div class="row justify-content-center">
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-header">Registro</div>
-          <div class="card-body">
-            <form>
-              <div class="form-group">
-                <label for="nombre">Nombre:</label>
-                <input type="text" class="form-control" id="nombre" name="nombre" [(ngModel)]="usuario.nombre">
-              </div>
-              <div class="invalid-feedback" *ngIf="validarExiste()">
-                El usuario ya existe</div>
-              <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" class="form-control" id="mail" name="email" [(ngModel)]="usuario.mail" required>
-              </div>
-              <div class="form-group">
-                <label for="password">Contraseña:</label>
-                <input type="password" class="form-control" id="pass" name="pass" [(ngModel)]="usuario.pass" required>
-              </div>
-              <div class="form-group">
-                <label for="confirmPassword">Repetir contraseña:</label>
-                <input type="password" class="form-control" id="confirmPass" name="confirmPass" [(ngModel)]="pass2" required>
-              </div>
-              <div clas="row" *ngIf="usuario.pass == pass2 && !validarExiste()">
-                <input type="button" class="btn btn-primary btn-block"  (click)="registrar()" value="registrar">
-              </div>
-            
-            </form>
-          </div>
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">Registro</div>
+        <div class="card-body">
+          <form>
+            <div class="form-group">
+              <label for="nombre">Nombre:</label>
+              <input type="text" class="form-control" id="nombre" name="nombre" [(ngModel)]="usuario.nombre" required>
+            </div>
+            <div class="form-group">
+              <label for="apellido">Apellido:</label>
+              <input type="text" class="form-control" id="apellido" name="apellido" [(ngModel)]="usuario.apellido" required>
+            </div>
+            <div class="form-group">
+              <label for="usuario">Usuario:</label>
+              <input type="text" class="form-control" id="usuario" name="usuario" [(ngModel)]="usuario.usuario" required>
+            </div>
+            <div class="form-group">
+              <label for="fecNac">Fecha de Nacimiento:</label>
+              <input type="date" class="form-control" id="fecNac" name="fecNac" [(ngModel)]="usuario.fecNac" required>
+            </div>
+            <div class="form-group">
+              <label for="mail">Email:</label>
+              <input type="email" class="form-control" id="mail" name="mail" [(ngModel)]="usuario.mail" required>
+            </div>
+            <div class="form-group">
+              <label for="tipo">Tipo de Usuario:</label>
+              <select class="form-control" id="tipo" name="tipo" [(ngModel)]="usuario.tipo">
+                <option value="1">Usuario</option>
+                <option value="2">Médico</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="pass">Contraseña:</label>
+              <input type="password" class="form-control" id="pass" name="pass" [(ngModel)]="usuario.pass" required>
+            </div>
+            <div class="form-group">
+              <label for="confirmPass">Repetir contraseña:</label>
+              <input type="password" class="form-control" id="confirmPass" name="confirmPass" [(ngModel)]="pass2" required>
+            </div>
+            <!-- Validación para mostrar el botón de registro -->
+            <div class="row mt-3">
+              <input type="button" class="btn btn-primary btn-block" *ngIf="usuario.pass && pass2 && usuario.pass === pass2" (click)="registrar()" value="Registrar">
+            </div>
+          </form>
         </div>
       </div>
     </div>
   </div>
-  
+</div>

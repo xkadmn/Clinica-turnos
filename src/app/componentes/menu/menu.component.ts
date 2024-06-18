@@ -10,7 +10,7 @@ import { UsuarioService } from 'src/app/servicios/usuario.service';
   imports: [RouterModule, CommonModule],
 })
 export class MenuComponent {
-  constructor(private router: Router, private usuarioservices: UsuarioService) {}
+  constructor(private router: Router, public usuarioservices: UsuarioService) {}
   public logout() {
     this.usuarioservices.logout();
     this.router.navigateByUrl('/principal/login');

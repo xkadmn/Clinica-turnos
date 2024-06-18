@@ -1,22 +1,23 @@
-
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-      <a class="navbar-brand" [routerLink]="'/principal'">Mi Sitio</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-          
-            <a type="button" class="btn btn-block" [routerLink]="'/principal/registro'">Registrar</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" [routerLink]="'/principal/login'">Login</a>
-          </li>
-        </ul>
-      </div>
-      <button class="btn btn-block" (click)="logout()">Cerrar sesión</button>
-      
+  <div class="container-fluid">
+    <a class="navbar-brand" [routerLink]="'/principal'">Mi Sitio</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a type="button" class="btn btn-block" [routerLink]="'/principal/registro'">Registrar</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="'/principal/login'">Login</a>
+        </li>
+      </ul>
     </div>
-  </nav>
+    <span class="navbar-text" *ngIf="usuarioservices.estoyLogueado()">
+      {{ usuarioservices.usuarioLogueado.nombre }} {{ usuarioservices.usuarioLogueado.apellido }}
+    </span>
+    <button class="btn btn-block" (click)="logout()">Cerrar sesión</button>
+  </div>
+</nav>

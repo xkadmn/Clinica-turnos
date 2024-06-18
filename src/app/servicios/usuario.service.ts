@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {  User } from '../entidades/usuario';
 import { HttpClient, provideHttpClient } from '@angular/common/http';
-
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,15 @@ export class UsuarioService {
     this.setLogueado()
    
   }
-  public usuario:  User = {nombre:'', pass:'', mail: '', usuario: '' };
+  public usuario:  User = {
+    nombre: '',
+    apellido: '',
+    usuario: '',
+    pass: '',
+    mail: '',   // Asegúrate de que mail está aquí
+    tipo: '',
+    fecNac: new Date(),
+  };
 
   public mostrarApi(){
     return this.http.get(this.apiurl + "/pruebajson");
@@ -25,14 +33,23 @@ export class UsuarioService {
   
   public setLogueadoXapi(usuario:User){
     this.usuarioLogueado = usuario;
+    localStorage.setItem('usuarioLogueado', JSON.stringify(usuario));
   }
 
-  public usuarioLogueado:  User = {nombre:'', pass:'', mail: '', usuario: '' };
+  public usuarioLogueado:  User = {
+    nombre: '',
+    apellido: '',
+    usuario: '',
+    pass: '',
+    mail: '',   // Asegúrate de que mail está aquí
+    tipo: '',
+    fecNac: new Date(),
+  };
   public listaUsuarios: User[] = []; 
   
 
   public estoyLogueado() :boolean{
-    return this.usuarioLogueado.nombre != '';
+    return this.usuarioLogueado.usuario != '';
   }
 
   public setLogueado(){
@@ -40,15 +57,25 @@ export class UsuarioService {
     if (usuarioLogueado) {
       this.usuarioLogueado = JSON.parse(usuarioLogueado);
     } else {
-      this.usuarioLogueado = { nombre: '', pass: '', mail: '', usuario: '' };
+      this.usuarioLogueado = { nombre: '',apellido :'', usuario: '', pass: '', mail: '' ,tipo: '',fecNac: new Date(),};
    // if(localStorage.getItem('usuarioLogueado') ?? '' != '')
     //  this.usuarioLogueado = JSON.parse(localStorage.getItem('usuarioLogueado') ?? '');
   }
   }
 
+    // Método para registrar usuario
+  
+    registrar(usuario: User): Observable<any> {
+      return this.http.post<any>(`${this.apiurl}/insertar`, usuario);
+    }
+
   
   public logout() {
     localStorage.removeItem('usuarioLogueado');
-    this.usuarioLogueado = { nombre: '', pass: '', mail: '' , usuario: '' };
+    this.usuarioLogueado = { nombre: '',apellido :'', usuario: '', pass: '', mail: '' ,tipo: '',fecNac: new Date(),};
+  }
+
+  public getUsuarioLogueado(): User | null {
+    return this.usuarioLogueado;
   }
 }

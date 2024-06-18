@@ -1,40 +1,47 @@
-import { CommonModule } from '@angular/common';
+// registro.component.ts
+
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { UsuarioService } from '../../servicios/usuario.service';
+import { User } from '../../entidades/usuario';
 import { FormsModule } from '@angular/forms';
-import { RouterModule, Router } from '@angular/router';
-import {  User } from '../../entidades/usuario';
-import { UsuarioService } from 'src/app/servicios/usuario.service';
-import { HttpClientModule, provideHttpClient } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-registro',
   templateUrl: './registro.component.html',
   styleUrls: ['./registro.component.css'],
   standalone: true,
-  imports: [FormsModule, RouterModule, CommonModule, HttpClientModule],
+  imports: [FormsModule, CommonModule],
 })
 export class RegistroComponent {
- 
-  public usuario: User = {nombre:'', pass:'', mail:'', usuario: ''};
-  public pass2:string = '';
+  usuario: User = {
+    nombre: '',
+    apellido: '',
+    usuario: '',
+    pass: '',
+    mail: '',   // Asegúrate de que mail está aquí
+    tipo: '1',
+    fecNac: new Date(),
+  };
+  pass2: string = '';
+  esMedico: boolean = false;
+  fecNac: Date = new Date(); // Inicialización aquí
+  constructor(private router: Router, private usuarioService: UsuarioService) {}
 
-  constructor(private router:Router,private us:UsuarioService){
-   
+  validarExiste(): boolean {
+    return this.usuarioService.listaUsuarios.some(u => u.usuario.toLowerCase() === this.usuario.usuario.toLowerCase());
   }
 
-
-  public validarExiste(){
-    return this.us.listaUsuarios.filter( t=> t.nombre.toLowerCase() == this.usuario.nombre.toLowerCase()).length == 1;
-  };
-  
-  
-  public registrar(){
-    this.us.listaUsuarios.push(this.usuario);
-    localStorage.setItem('usuarios', JSON.stringify(this.us.listaUsuarios));
-    this.us.listaUsuarios= JSON.parse( JSON.stringify(this.us.listaUsuarios));
-    this.router.navigateByUrl('/principal');
-  };
-
-
-
+  registrar() {
+    this.usuarioService.registrar(this.usuario).subscribe(
+      () => {
+        console.log('Usuario registrado correctamente 13');
+        this.router.navigateByUrl('/principal');
+      },
+      (error) => {
+        console.error('Error al registrar usuario 14:', error);
+      }
+    );
+  }
 }

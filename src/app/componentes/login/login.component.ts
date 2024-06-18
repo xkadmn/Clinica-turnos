@@ -14,54 +14,124 @@ import { HttpClientModule, provideHttpClient } from '@angular/common/http';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  public usuario: User = {nombre:'', pass:'', mail: '', usuario: '' };
+  public usuario: User = {
+    nombre: '',
+    apellido: '',
+    usuario: '',
+    pass: '',
+    mail: '',   // Asegúrate de que mail está aquí
+    tipo: '',
+    fecNac: new Date(),
+  };        
   public listaUsuarios: User[] = []; 
     
+  constructor(private router: Router, private usuarioservices: UsuarioService) { 
+    if (this.usuarioservices.estoyLogueado()) {
+      this.router.navigateByUrl('/principal/bienvenida');
+    }
+  }
 
-
-  constructor(private router: Router, private usuarioservices:UsuarioService) { 
+  /*constructor(private router: Router, private usuarioservices:UsuarioService) { 
 
   if(usuarioservices.estoyLogueado()){
      this.router.navigateByUrl('/principal/bienvenida');
     }
-  } //fin constructor
+  } //fin constructor*/
 
 
+
+
+  
+ /*public login(){
+  console.log('Intentando loguear con:', this.usuario); // Log datos de usuario
+     this.usuarioservices.loginenApi(this.usuario).subscribe(
+      x=> {
+        console.log('Respuesta de la API:', x); // Log respuesta de la API
+        if((<User>x).usuario != null){
+          this.usuarioservices.setLogueadoXapi(<User>x);
+          
+        const tipoUsuario = Number((<User>x).tipo);
+        console.log('Tipo de usuario:', tipoUsuario);
+
+        // Pasar a la página principal según tipo de usuario
+        switch (tipoUsuario) {
+          case 1:
+            this.router.navigateByUrl('/principal/bienvenida');
+            break;
+          case 2:
+            this.router.navigateByUrl('/principal/bienvenida2');
+            break;
+          case 3:
+            this.router.navigateByUrl('/principal/bienvenida3');
+            break;
+          case 0:
+            console.log('Profesional no aprobado');
+            this.router.navigateByUrl('/profesional/pendiente-aprobacion');
+            break;
+          default:
+            console.log('Tipo de usuario no reconocido');
+            break;
+        }
+
+        } else {
+          // Maneja el error de login aquí
+          console.log('Credenciales incorrectas');
+        }
+      },
+      error => {
+        // Maneja el error de la solicitud aquí
+        console.error('Error en la solicitud', error);
+      }
+     )*/
+
+      public login() {
+        console.log('Intentando loguear con:', this.usuario);
+      
+        this.usuarioservices.loginenApi(this.usuario).subscribe(
+          (response: any) => {
+            console.log('Respuesta de la API:', response);
+      
+            if (response && response.usuario != null) {
+              // Usuario encontrado, continuar con el proceso de login
+              this.usuarioservices.setLogueadoXapi(response);
+      
+              const tipoUsuario = Number(response.tipo);
+              console.log('Tipo de usuario:', tipoUsuario);
+      
+              // Redirigir según el tipo de usuario
+              switch (tipoUsuario) {
+                case 1:
+                  this.router.navigateByUrl('/principal/bienvenida');
+                  break;
+                case 2:
+                  this.router.navigateByUrl('/principal/bienvenida2');
+                  break;
+                case 3:
+                  this.router.navigateByUrl('/principal/bienvenida3');
+                  break;
+                default:
+                  console.log('Tipo de usuario no reconocido');
+                  break;
+              }
+            } else {
+              // Manejar caso de credenciales incorrectas
+              console.log('Credenciales incorrectas o usuario no encontrado');
+              // Puedes mostrar un mensaje de error al usuario
+            }
+          },
+          error => {
+            console.error('Error en la solicitud', error);
+            // Puedes mostrar un mensaje de error al usuario o manejarlo de otra manera
+          }
+        );
+      }
+
+  
   public prueba(){
     this.usuarioservices.mostrarApi().subscribe(
       t=> this.probando = (<any>t).mensaje
     )
   }   public probando:string="";
-
-
-  public login(){
-  //   //cargar lista de us desde localstorage
-  //  this.listaUsuarios = JSON.parse( localStorage.getItem('usuarios') || '[]');
-  //   ///verificamos credenciales
-  //   if(this.usuarioservices.listaUsuarios.filter( t => t.nombre.toLowerCase() == this.usuario.nombre.toLowerCase() 
-  //     && t.pass == this.usuario.pass).length == 1)
-  //   {
-  //     ///guardar usuario logueado
-  //     localStorage.setItem('usuarioLogueado', JSON.stringify(
-  //       this.usuarioservices.listaUsuarios.filter( t=> t.nombre.toLowerCase() == 
-  //       this.usuario.nombre.toLowerCase() && t.pass == this.usuario.pass)[0])
-  //     )
-
-     this.usuarioservices.loginenApi(this.usuario).subscribe(
-      x=> {
-        if((<User>x).usuario != null){
-          this.usuarioservices.setLogueadoXapi(<User>x);
-          ///pasar a la pagina principal segun tipo de usuario
-          this.router.navigateByUrl('/principal/bienvenida');
-
-        }
-      }
-     )
-  
- 
-
-    
-  };
 
 
 

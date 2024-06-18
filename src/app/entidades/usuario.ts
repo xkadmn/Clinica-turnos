@@ -1,7 +1,10 @@
+
 export interface User {
-    usuario: string;
     nombre: string;
+    apellido: string;
     pass: string;
     mail: string;
-  
-}
+    usuario: string;
+    tipo: string;
+    fecNac?: Date; // Añadir '?' para hacerla opcional
+  }
