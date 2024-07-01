@@ -16,22 +16,26 @@ import { CommonModule } from '@angular/common';
 })
 export class RegistroComponent {
   usuario: User = {
+    id: 0,
     nombre: '',
     apellido: '',
     usuario: '',
     pass: '',
     mail: '',   // Asegúrate de que mail está aquí
-    tipo: '1',
+    tipo: '',
     fecNac: new Date(),
+    aprobado: false,
   };
   pass2: string = '';
   esMedico: boolean = false;
   fecNac: Date = new Date(); // Inicialización aquí
+  
   constructor(private router: Router, private usuarioService: UsuarioService) {}
 
-  validarExiste(): boolean {
+  /*validarExiste(): boolean {
     return this.usuarioService.listaUsuarios.some(u => u.usuario.toLowerCase() === this.usuario.usuario.toLowerCase());
-  }
+  }*/
+
 
   registrar() {
     this.usuarioService.registrar(this.usuario).subscribe(

@@ -1,0 +1,55 @@
+<div class="container">
+  <h2>Buscar Médicos por Especialidad</h2>
+
+  <div class="form-group" *ngIf="especialidades.length > 0">
+    <label for="especialidad">Especialidad:</label>
+    <select id="especialidad" class="form-control" [(ngModel)]="selectedEspecialidad">
+      <option *ngFor="let especialidad of especialidades" [value]="especialidad.id">{{ especialidad.nombre }}</option>
+    </select>
+  </div>
+
+  <button (click)="listarMedicos()">Listar Médicos</button>
+
+  <div *ngIf="medicos.length > 0">
+    <h3>Listado de Médicos</h3>
+    <div *ngFor="let medico of medicos" class="medico-container">
+      <h4>{{ medico.user.nombre }} {{ medico.user.apellido }} </h4>
+      <p>Especialidades:
+        <span *ngFor="let especialidad of medico.especialidades">{{ especialidad.nombre }}</span>
+      </p>
+      <p>Próximo turno disponible: {{ medico.proximoTurno || 'No hay turnos disponibles' }}</p>
+      <button (click)="agendarTurno(medico)">Agendar Turno</button>
+      <button (click)="verAgenda(medico)">Ver Agenda</button>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="container">
+  <h2>Buscar Médicos por Especialidad</h2>
+
+  <div class="form-group" *ngIf="especialidades.length > 0">
+    <label for="especialidad">Especialidad:</label>
+    <select id="especialidad" class="form-control" [(ngModel)]="selectedEspecialidad">
+      <option *ngFor="let especialidad of especialidades" [value]="especialidad.id">{{ especialidad.nombre }}</option>
+    </select>
+  </div>
+
+  <button (click)="listarMedicos()">Listar Médicos</button>
+
+  <div *ngIf="medicos.length > 0">
+    <h3>Listado de Médicos</h3>
+    <div *ngFor="let medico of medicos" class="medico-container">
+      <h4>{{ medico.user.nombre }} {{ medico.user.apellido }} </h4>
+      <p>Especialidades:
+        <span *ngFor="let especialidad of medico.especialidades">{{ especialidad.nombre }}</span>
+      </p>
+      <p>Próximo turno disponible: {{ medico.proximoTurno || 'No hay turnos disponibles' }}</p>
+      <button (click)="agendarTurno(medico)">Agendar Turno</button>
+      <button (click)="verAgenda(medico)">Ver Agenda</button>
+    </div>
+  </div>
+</div>
+

@@ -15,6 +15,7 @@ import { HttpClientModule, provideHttpClient } from '@angular/common/http';
 })
 export class LoginComponent {
   public usuario: User = {
+    id: 0,
     nombre: '',
     apellido: '',
     usuario: '',
@@ -22,6 +23,7 @@ export class LoginComponent {
     mail: '',   // Asegúrate de que mail está aquí
     tipo: '',
     fecNac: new Date(),
+    aprobado: true,
   };        
   public listaUsuarios: User[] = []; 
     
@@ -30,59 +32,6 @@ export class LoginComponent {
       this.router.navigateByUrl('/principal/bienvenida');
     }
   }
-
-  /*constructor(private router: Router, private usuarioservices:UsuarioService) { 
-
-  if(usuarioservices.estoyLogueado()){
-     this.router.navigateByUrl('/principal/bienvenida');
-    }
-  } //fin constructor*/
-
-
-
-
-  
- /*public login(){
-  console.log('Intentando loguear con:', this.usuario); // Log datos de usuario
-     this.usuarioservices.loginenApi(this.usuario).subscribe(
-      x=> {
-        console.log('Respuesta de la API:', x); // Log respuesta de la API
-        if((<User>x).usuario != null){
-          this.usuarioservices.setLogueadoXapi(<User>x);
-          
-        const tipoUsuario = Number((<User>x).tipo);
-        console.log('Tipo de usuario:', tipoUsuario);
-
-        // Pasar a la página principal según tipo de usuario
-        switch (tipoUsuario) {
-          case 1:
-            this.router.navigateByUrl('/principal/bienvenida');
-            break;
-          case 2:
-            this.router.navigateByUrl('/principal/bienvenida2');
-            break;
-          case 3:
-            this.router.navigateByUrl('/principal/bienvenida3');
-            break;
-          case 0:
-            console.log('Profesional no aprobado');
-            this.router.navigateByUrl('/profesional/pendiente-aprobacion');
-            break;
-          default:
-            console.log('Tipo de usuario no reconocido');
-            break;
-        }
-
-        } else {
-          // Maneja el error de login aquí
-          console.log('Credenciales incorrectas');
-        }
-      },
-      error => {
-        // Maneja el error de la solicitud aquí
-        console.error('Error en la solicitud', error);
-      }
-     )*/
 
       public login() {
         console.log('Intentando loguear con:', this.usuario);

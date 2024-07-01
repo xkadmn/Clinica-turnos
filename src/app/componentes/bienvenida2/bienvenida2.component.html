@@ -1,0 +1,64 @@
+<p>PRINCIPAL MEDICO</p>
+<div class="container mt-4">
+  <h1>Bienvenido, Dr. {{ usuarioService.usuarioLogueado.nombre }} {{ usuarioService.usuarioLogueado.apellido }}</h1>
+  <div class="d-flex justify-content-around mt-4">
+    <button class="btn btn-primary" (click)="mostrarSeccion('agenda')">Ver Agenda</button>
+    <button class="btn btn-secondary" (click)="mostrarSeccion('habilitar-turnos')">Habilitar Turnos</button>
+  </div>
+
+  <!-- Sección de Ver Agenda -->
+  <div *ngIf="seccionActual === 'agenda'" class="mt-4">
+    <h2>Agenda - Semana del {{ fechaInicioSemana }} al {{ fechaFinSemana }}</h2>
+    <div class="d-flex justify-content-between my-3">
+      <button class="btn btn-outline-primary" (click)="semanaAnterior()">Semana Anterior</button>
+      <button class="btn btn-outline-primary" (click)="semanaSiguiente()">Semana Siguiente</button>
+    </div>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Hora</th>
+          <th>Lunes</th>
+          <th>Martes</th>
+          <th>Miércoles</th>
+          <th>Jueves</th>
+          <th>Viernes</th>
+          <th>Sábado</th>
+          <th>Domingo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let hora of horas">
+          <td>{{ hora }}</td>
+          <td *ngFor="let dia of diasSemana">{{ obtenerTurno(dia, hora) }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Sección de Habilitar Turnos -->
+  <div *ngIf="seccionActual === 'habilitar-turnos'" class="mt-4">
+    <h2>Habilitar Turnos</h2>
+    <form (ngSubmit)="habilitarTurno()" #turnoForm="ngForm">
+
+      <div class="form-group">
+        <label for="especialidad">Especialidad</label>
+        <select id="especialidad" class="form-control" [(ngModel)]="turno.especialidadId" name="especialidad" required>
+          <option value="">Seleccionar Especialidad</option>
+          <option *ngFor="let especialidad of especialidades" [value]="especialidad.id">{{ especialidad.nombre }}</option>
+        </select>
+      </div>
+      <div class="form-group" *ngIf="turno.especialidadId">
+        <label for="fecha">Fecha</label>
+        <input type="date" id="fecha" class="form-control" [(ngModel)]="turno.fecha" name="fecha" required>
+      </div>
+      <div class="form-group" *ngIf="turno.especialidadId && turno.fecha">
+        <label for="horaInicio">Hora de Inicio</label>
+        <select id="horaInicio" class="form-control" [(ngModel)]="horarioSeleccionado" name="horaInicio" required>
+          <option value="">Seleccionar Hora</option>
+          <option *ngFor="let hora of horasDisponibles" [value]="hora">{{ hora }}</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="!turnoForm.form.valid">Habilitar Turnos</button>
+    </form>
+  </div>
+</div>

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, booleanAttribute } from '@angular/core';
 import {  User } from '../entidades/usuario';
 import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -7,75 +7,95 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class UsuarioService {
-  private apiurl:string = "https://hkoo-clinicaapi.mdbgo.io";
-  constructor(public http:HttpClient) { 
-    this.listaUsuarios = JSON.parse(localStorage.getItem('usuario') || '[]');
-    this.setLogueado()
-   
-  }
-  public usuario:  User = {
+  private apiurl: string = "https://hkoo-clinicaapi.mdbgo.io";
+  public usuarioLogueado: User = {
+    id: 0,
     nombre: '',
     apellido: '',
     usuario: '',
     pass: '',
-    mail: '',   // Asegúrate de que mail está aquí
+    mail: '',
     tipo: '',
     fecNac: new Date(),
+    aprobado: false,
   };
 
-  public mostrarApi(){
+  public listaUsuarios: User[] = []; 
+  
+
+  constructor(private http: HttpClient) {
+    this.setLogueado();
+  }
+
+  public mostrarApi(): Observable<any> {
     return this.http.get(this.apiurl + "/pruebajson");
   }
 
-  public loginenApi(usuario:User){
-    return this.http.post(this.apiurl + "/login",usuario);
+  public loginenApi(usuario: User): Observable<any> {
+    return this.http.post(this.apiurl + "/login", usuario);
   }
-  
-  public setLogueadoXapi(usuario:User){
+
+  public setLogueadoXapi(usuario: User) {
     this.usuarioLogueado = usuario;
     localStorage.setItem('usuarioLogueado', JSON.stringify(usuario));
   }
 
-  public usuarioLogueado:  User = {
-    nombre: '',
-    apellido: '',
-    usuario: '',
-    pass: '',
-    mail: '',   // Asegúrate de que mail está aquí
-    tipo: '',
-    fecNac: new Date(),
-  };
-  public listaUsuarios: User[] = []; 
-  
-
-  public estoyLogueado() :boolean{
-    return this.usuarioLogueado.usuario != '';
-  }
-
-  public setLogueado(){
+  public setLogueado() {
     const usuarioLogueado = localStorage.getItem('usuarioLogueado');
     if (usuarioLogueado) {
       this.usuarioLogueado = JSON.parse(usuarioLogueado);
     } else {
-      this.usuarioLogueado = { nombre: '',apellido :'', usuario: '', pass: '', mail: '' ,tipo: '',fecNac: new Date(),};
-   // if(localStorage.getItem('usuarioLogueado') ?? '' != '')
-    //  this.usuarioLogueado = JSON.parse(localStorage.getItem('usuarioLogueado') ?? '');
-  }
-  }
-
-    // Método para registrar usuario
-  
-    registrar(usuario: User): Observable<any> {
-      return this.http.post<any>(`${this.apiurl}/insertar`, usuario);
+      this.usuarioLogueado = {
+        id: 0,
+        nombre: '',
+        apellido: '',
+        usuario: '',
+        pass: '',
+        mail: '',
+        tipo: '',
+        fecNac: new Date(),
+        aprobado: false,
+      };
     }
+  }
 
-  
+  public registrar(usuario: User): Observable<any> {
+    usuario.aprobado = (usuario.tipo === '2') ? false : true;
+    return this.http.post<any>(`${this.apiurl}/insertar`, usuario);
+  }
+
   public logout() {
     localStorage.removeItem('usuarioLogueado');
-    this.usuarioLogueado = { nombre: '',apellido :'', usuario: '', pass: '', mail: '' ,tipo: '',fecNac: new Date(),};
+    this.usuarioLogueado = {
+      id: 0,
+      nombre: '',
+      apellido: '',
+      usuario: '',
+      pass: '',
+      mail: '',
+      tipo: '',
+      fecNac: new Date(),
+      aprobado: false,
+    };
+  }
+
+  public estoyLogueado(): boolean {
+    return this.usuarioLogueado.usuario !== '';
   }
 
   public getUsuarioLogueado(): User | null {
     return this.usuarioLogueado;
   }
+
+
+//medico no aprobado y aprobar medico para usuario tipo 3
+    getMedicosNoAprobados(): Observable<User[]> {
+      return this.http.get<User[]>(`${this.apiurl}/medicos-pendientes`);
+    }
+  
+   aprobarMedico(usuarioId: number): Observable<any> {
+      return this.http.put<any>(`${this.apiurl}/aprobar-medico/${usuarioId}`, {});
+    }
+
+    
 }
