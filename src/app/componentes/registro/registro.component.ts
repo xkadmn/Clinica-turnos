@@ -21,14 +21,14 @@ export class RegistroComponent {
     apellido: '',
     usuario: '',
     pass: '',
-    mail: '',   // Asegúrate de que mail está aquí
+    mail: '',  
     tipo: '',
     fecNac: new Date(),
     aprobado: false,
   };
   pass2: string = '';
   esMedico: boolean = false;
-  fecNac: Date = new Date(); // Inicialización aquí
+  fecNac: Date = new Date(); 
   
   constructor(private router: Router, private usuarioService: UsuarioService) {}
 
@@ -41,7 +41,7 @@ export class RegistroComponent {
     this.usuarioService.registrar(this.usuario).subscribe(
       () => {
         console.log('Usuario registrado correctamente 13');
-        this.router.navigateByUrl('/principal');
+        this.router.navigateByUrl('/principal/login');
       },
       (error) => {
         console.error('Error al registrar usuario 14:', error);

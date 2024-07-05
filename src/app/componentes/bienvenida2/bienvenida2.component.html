@@ -5,7 +5,7 @@
     <button class="btn btn-primary" (click)="mostrarSeccion('agenda')">Ver Agenda</button>
     <button class="btn btn-secondary" (click)="mostrarSeccion('habilitar-turnos')">Habilitar Turnos</button>
   </div>
-
+  
   <!-- Sección de Ver Agenda -->
   <div *ngIf="seccionActual === 'agenda'" class="mt-4">
     <h2>Agenda - Semana del {{ fechaInicioSemana }} al {{ fechaFinSemana }}</h2>
@@ -39,11 +39,9 @@
   <div *ngIf="seccionActual === 'habilitar-turnos'" class="mt-4">
     <h2>Habilitar Turnos</h2>
     <form (ngSubmit)="habilitarTurno()" #turnoForm="ngForm">
-
       <div class="form-group">
         <label for="especialidad">Especialidad</label>
         <select id="especialidad" class="form-control" [(ngModel)]="turno.especialidadId" name="especialidad" required>
-          <option value="">Seleccionar Especialidad</option>
           <option *ngFor="let especialidad of especialidades" [value]="especialidad.id">{{ especialidad.nombre }}</option>
         </select>
       </div>
@@ -52,13 +50,16 @@
         <input type="date" id="fecha" class="form-control" [(ngModel)]="turno.fecha" name="fecha" required>
       </div>
       <div class="form-group" *ngIf="turno.especialidadId && turno.fecha">
-        <label for="horaInicio">Hora de Inicio</label>
-        <select id="horaInicio" class="form-control" [(ngModel)]="horarioSeleccionado" name="horaInicio" required>
-          <option value="">Seleccionar Hora</option>
-          <option *ngFor="let hora of horasDisponibles" [value]="hora">{{ hora }}</option>
-        </select>
+        <label>Horarios Disponibles</label><br>
+        <div *ngFor="let hora of horasDisponibles">
+          <label>
+            <input type="checkbox" [value]="hora" (change)="seleccionarHorario(hora)" [checked]="horariosSeleccionados.includes(hora)">
+            {{ hora }}
+          </label>
+        </div>
       </div>
-      <button type="submit" class="btn btn-primary" [disabled]="!turnoForm.form.valid">Habilitar Turnos</button>
+      <button type="submit" class="btn btn-primary" [disabled]="!turnoForm.form.valid || horariosSeleccionados.length === 0">Habilitar Turnos</button>
     </form>
   </div>
+
 </div>

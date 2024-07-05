@@ -1,7 +1,6 @@
-
 import { RouterModule, Router } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Especialidad } from 'src/app/entidades/medico';
+import { Especialidad, Turno } from 'src/app/entidades/medico';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -18,21 +17,25 @@ import { MedicoService } from 'src/app/servicios/medico.service';
 })
 export class Bienvenida2Component implements OnInit {
 
- usuario: any; 
+  usuario: any; 
   seccionActual: string = 'agenda';
   especialidades: Especialidad[] = [];
-  turno = {
+  turno: Turno = {
+    id: 0,
+    especialidadId: 0,
     fecha: '',
-    horaInicio: '',
-    horaFin: '',
-    especialidadId: null
+    hora: '',
+    //horaFin: '',
+    medicoId: 0,
+    disponible: 1,
+    pacienteId: undefined 
   };
   horas = ['08:00', '08:20', '08:40', '09:00', '09:20', '09:40', '10:00']; 
   diasSemana = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
   fechaInicioSemana = '01-06-2024'; 
   fechaFinSemana = '07-06-2024'; 
   horasDisponibles: string[] = [];
-  horarioSeleccionado: string = '';
+  horariosSeleccionados: string[] = [];
   
   constructor(private http: HttpClient, public usuarioService: UsuarioService, private especialidadService: EspecialidadService, private medicoService: MedicoService ) {}
 
@@ -41,7 +44,6 @@ export class Bienvenida2Component implements OnInit {
     this.obtenerEspecialidadesMedico();
     this.generarHorariosDisponibles();
   }
-
 
   mostrarSeccion(seccion: string) {
     this.seccionActual = seccion;
@@ -78,36 +80,65 @@ export class Bienvenida2Component implements OnInit {
     }
   }
 
-  mostrarHorariosDisponibles() {
-    // lógica 
-  }
-
   seleccionarHorario(hora: string) {
-    this.horarioSeleccionado = hora;
+    if (this.horariosSeleccionados.includes(hora)) {
+      this.horariosSeleccionados = this.horariosSeleccionados.filter(h => h !== hora);
+    } else {
+      this.horariosSeleccionados.push(hora);
+    }
   }
+
   habilitarTurno() {
+    
+    const medicoId = this.usuarioService.usuarioLogueado.id; 
+    const turnosACrear: Turno[] = this.horariosSeleccionados.map(hora => ({
+      id: undefined,
+      especialidadId: this.turno.especialidadId,
+      fecha: this.turno.fecha,
+      hora: hora,
+      //horaFin: this.calcularHoraFin(hora),
+      medicoId: medicoId,
+      disponible: 1,
+      pacienteId: undefined
+    }));
   
-    const usuarioMedicoId = this.usuario.id;
-    const turno = {
-        usuarioMedicoId: usuarioMedicoId,
-        especialidadId: this.turno.especialidadId,
-        fecha: this.turno.fecha,
-        hora: this.horarioSeleccionado,
-        disponible: 1 
-    };
-
-    console.log('Datos a enviar:', turno);
-
-    this.medicoService.habilitarTurnos(turno).subscribe(
-        (response: any) => {
-            console.log('Turno habilitado:', response);
-            
-        },
-        (error: any) => {
-            console.error('Error al habilitar turno:', error);
-        }
+    if (turnosACrear.length === 0) {
+      console.error('No se han seleccionado horarios válidos.');
+      return;
+    }
+  
+    console.log('Turnos a crear:', turnosACrear);
+  
+    // Llamar al servicio para crear los turnos
+    this.medicoService.habilitarTurno(turnosACrear).subscribe(
+      (response: any) => {
+        console.log('Turnos creados:', response);
+        
+      },
+      (error: any) => {
+        console.error('Error al crear turnos:', error);
+      }
     );
-}
+  }
+
+  /*calcularHoraFin(horaInicio: string): string {
+    // Convertir la hora de inicio a minutos
+    const [hh, mm] = horaInicio.split(':').map(Number);
+    const horaInicioMinutos = hh * 60 + mm;
+  
+    // Sumar 20 minutos al tiempo de inicio en minutos
+    const horaFinMinutos = horaInicioMinutos + 20;
+  
+    // Calcular las horas y minutos para la hora de fin
+    const hhFin = Math.floor(horaFinMinutos / 60);
+    const mmFin = horaFinMinutos % 60;
+  
+    // Formatear la hora de fin en el formato HH:mm
+    const horaFin = `${hhFin.toString().padStart(2, '0')}:${mmFin.toString().padStart(2, '0')}`;
+  
+    return horaFin;
+  }*/
+
   obtenerTurno(dia: string, hora: string): string {
     return `${hora}`;
   }
@@ -117,7 +148,6 @@ export class Bienvenida2Component implements OnInit {
   }
 
   semanaSiguiente() {
-   
+    
   }
-  }
-
+}

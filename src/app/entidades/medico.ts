@@ -23,3 +23,13 @@ export interface User1 {
     id: number;
     nombre: string;
   }
+
+  export interface Turno {
+    id?: number; // Hacer que el campo id sea opcional
+    especialidadId: number;
+    fecha: string;
+    hora: string;
+    medicoId: number;
+    disponible: number;
+    pacienteId?: number;
+  }
