@@ -10,13 +10,16 @@ import { Bienvenida3Component } from './componentes/bienvenida3/bienvenida3.comp
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AprobarmedicosComponent } from './componentes/aprobarmedicos/aprobarmedicos.component';
+import { AprobadoPipe } from './pipes/aprobado.pipe'; 
+
 @NgModule({
   declarations: [
     AppComponent,
     //BienvenidaComponent,
    // Bienvenida2Component,
     Bienvenida3Component,
-    AprobarmedicosComponent
+    AprobarmedicosComponent,
+    AprobadoPipe
   ],
   imports: [
     BrowserModule,

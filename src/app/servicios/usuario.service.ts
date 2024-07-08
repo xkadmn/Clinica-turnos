@@ -1,7 +1,8 @@
 import { Injectable, booleanAttribute } from '@angular/core';
 import {  User } from '../entidades/usuario';
 import { HttpClient, provideHttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -92,9 +93,18 @@ export class UsuarioService {
     getMedicosNoAprobados(): Observable<User[]> {
       return this.http.get<User[]>(`${this.apiurl}/medicos-pendientes`);
     }
+    
+    getTodosLosMedicos(): Observable<User[]> {
+      return this.http.get<User[]>(`${this.apiurl}/todos-los-medicos`);
+    }
   
    aprobarMedico(usuarioId: number): Observable<any> {
       return this.http.put<any>(`${this.apiurl}/aprobar-medico/${usuarioId}`, {});
+    }
+
+
+    toggleAprobacionMedico(usuarioId: number, nuevoEstado: boolean): Observable<any> {
+      return this.http.put<any>(`${this.apiurl}/aprobar-medico/${usuarioId}`, { aprobado: nuevoEstado });
     }
 
     
