@@ -6,9 +6,11 @@
     <button class="btn btn-secondary" (click)="mostrarSeccion('habilitar-turnos')">Habilitar Turnos</button>
   </div>
   
+
+ 
   <!-- Sección de Ver Agenda -->
   <div *ngIf="seccionActual === 'agenda'" class="mt-4">
-    <h2>Agenda - Semana del {{ fechaInicioSemana }} al {{ fechaFinSemana }}</h2>
+    <h2>Agenda - Semana del {{ fechaInicioSemana | date:'dd-MM-yyyy' }} al {{ fechaFinSemana | date:'dd-MM-yyyy' }}</h2>
     <div class="d-flex justify-content-between my-3">
       <button class="btn btn-outline-primary" (click)="semanaAnterior()">Semana Anterior</button>
       <button class="btn btn-outline-primary" (click)="semanaSiguiente()">Semana Siguiente</button>
@@ -17,13 +19,7 @@
       <thead>
         <tr>
           <th>Hora</th>
-          <th>Lunes</th>
-          <th>Martes</th>
-          <th>Miércoles</th>
-          <th>Jueves</th>
-          <th>Viernes</th>
-          <th>Sábado</th>
-          <th>Domingo</th>
+          <th *ngFor="let dia of diasSemana">{{ dia }}</th>
         </tr>
       </thead>
       <tbody>
@@ -34,6 +30,7 @@
       </tbody>
     </table>
   </div>
+
 
   <!-- Sección de Habilitar Turnos -->
   <div *ngIf="seccionActual === 'habilitar-turnos'" class="mt-4">

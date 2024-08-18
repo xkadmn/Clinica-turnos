@@ -20,7 +20,7 @@ export class AprobarmedicosComponent implements OnInit {
   }
 
   getMedicos() {
-    this.usuarioService.getMedicosNoAprobados().subscribe(
+    this.usuarioService.getTodosLosMedicos().subscribe(
       (data: User[]) => {
         this.medicos = data;
         this.filtrarMedicos();
@@ -37,7 +37,7 @@ export class AprobarmedicosComponent implements OnInit {
     } else if (this.filtroEstado === 'noAprobados') {
       this.medicosFiltrados = this.medicos.filter(medico => !medico.aprobado);
     } else {
-      this.medicosFiltrados = this.medicos;
+      this.medicosFiltrados = this.medicos; // Para 'todos'
     }
   }
 
@@ -61,5 +61,16 @@ export class AprobarmedicosComponent implements OnInit {
   cambiarFiltro(nuevoFiltro: string) {
     this.filtroEstado = nuevoFiltro;
     this.filtrarMedicos();
+  }
+
+  hoverButton(hover: boolean) {
+    const botones = document.querySelectorAll('.btn-sm');
+    botones.forEach(btn => {
+      if (hover) {
+        btn.classList.add('btn-hover');
+      } else {
+        btn.classList.remove('btn-hover');
+      }
+    });
   }
 }
