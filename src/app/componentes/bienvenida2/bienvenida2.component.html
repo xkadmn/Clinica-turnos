@@ -1,37 +1,58 @@
 <p>PRINCIPAL MEDICO</p>
 <div class="container mt-4">
   <h1>Bienvenido, Dr. {{ usuarioService.usuarioLogueado.nombre }} {{ usuarioService.usuarioLogueado.apellido }}</h1>
-  <div class="d-flex justify-content-around mt-4">
-    <button class="btn btn-primary" (click)="mostrarSeccion('agenda')">Ver Agenda</button>
-    <button class="btn btn-secondary" (click)="mostrarSeccion('habilitar-turnos')">Habilitar Turnos</button>
-  </div>
-  
+    <div class="d-flex justify-content-around mt-4">
+      <button class="btn btn-primary" (click)="mostrarSeccion('agenda')">Ver Agenda</button>
+      <button class="btn btn-secondary" (click)="mostrarSeccion('habilitar-turnos')">Habilitar Turnos</button>
+    </div>
 
- 
-  <!-- Sección de Ver Agenda -->
+
+ <!-- Sección de Ver Agenda y Lista de Turnos -->
   <div *ngIf="seccionActual === 'agenda'" class="mt-4">
-    <h2>Agenda - Semana del {{ fechaInicioSemana | date:'dd-MM-yyyy' }} al {{ fechaFinSemana | date:'dd-MM-yyyy' }}</h2>
+
+    <!-- Navegación entre subsecciones -->
+    <div class="d-flex justify-content-between my-3">
+      <button class="btn btn-outline-primary" (click)="mostrarSubseccion('calendario')">Calendario</button>
+      <button class="btn btn-outline-primary" (click)="mostrarSubseccion('listaTurnos')">Lista de Turnos</button>
+    </div>
+
+    <h2>Calendario - Semana del {{ fechaInicioSemana | date:'dd-MM-yyyy' }} al {{ fechaFinSemana | date:'dd-MM-yyyy' }}</h2>
     <div class="d-flex justify-content-between my-3">
       <button class="btn btn-outline-primary" (click)="semanaAnterior()">Semana Anterior</button>
       <button class="btn btn-outline-primary" (click)="semanaSiguiente()">Semana Siguiente</button>
     </div>
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th>Hora</th>
-          <th *ngFor="let dia of diasSemana">{{ dia }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let hora of horas">
-          <td>{{ hora }}</td>
-          <td *ngFor="let dia of diasSemana">{{ obtenerTurno(dia, hora) }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
 
 
+ <!-- Sub-sección Lista de Turnos -->
+    <div *ngIf="subseccionActual === 'listaTurnos'">
+    <h2>Lista de Turnos - Semana del {{ fechaInicioSemana | date:'dd-MM-yyyy' }} al {{ fechaFinSemana | date:'dd-MM-yyyy' }}</h2>
+    <ul class="list-group">
+      <li *ngFor="let turno of turnos" class="list-group-item">
+        Fecha: {{ turno.fecha | date:'dd-MM-yyyy' }} - Hora: {{ turno.hora }} - Especialidad: {{ turno.especialidadId }}
+      </li>
+    </ul>
+    </div>
+
+
+ <!-- Sub-sección Calendario -->
+    <div *ngIf="subseccionActual === 'calendario'">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th *ngFor="let dia of diasSemana">{{ dia }}</th>
+          </tr>
+        </thead>
+        <tbody>
+        
+        </tbody>
+      </table>
+    </div>
+
+    </div>
+  
+
+ 
+ 
   <!-- Sección de Habilitar Turnos -->
   <div *ngIf="seccionActual === 'habilitar-turnos'" class="mt-4">
     <h2>Habilitar Turnos</h2>

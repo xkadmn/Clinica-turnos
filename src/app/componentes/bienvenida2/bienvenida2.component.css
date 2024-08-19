@@ -1,0 +1,23 @@
+
+  p{
+    color: red;
+  }
+
+  .table {
+    width: 100%;
+  }
+  
+  .table-bordered {
+    border: 1px solid #dee2e6;
+  }
+  
+  .turno-cuadrado {
+    background-color: #03213e;
+    padding: 4px;
+    margin-bottom: 2px;
+    border-radius: 4px;
+  }
+  
+  .turnos-container {
+    min-height: 50px;
+  }
