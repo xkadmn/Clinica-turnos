@@ -23,15 +23,49 @@
     </div>
 
 
+    <!-- Sección de Especialidades del Médico -->
+<div class="mt-4">
+  <h2>Especialidades del Médico</h2>
+  <ul class="list-group">
+    <li *ngFor="let especialidad of especialidades" class="list-group-item">
+      {{ especialidad.nombre }} (ID: {{ especialidad.id }})
+    </li>
+  </ul>
+</div>
+
+
  <!-- Sub-sección Lista de Turnos -->
-    <div *ngIf="subseccionActual === 'listaTurnos'">
-    <h2>Lista de Turnos - Semana del {{ fechaInicioSemana | date:'dd-MM-yyyy' }} al {{ fechaFinSemana | date:'dd-MM-yyyy' }}</h2>
-    <ul class="list-group">
-      <li *ngFor="let turno of turnos" class="list-group-item">
-        Fecha: {{ turno.fecha | date:'dd-MM-yyyy' }} - Hora: {{ turno.hora }} - Especialidad: {{ turno.especialidadId }}
-      </li>
-    </ul>
-    </div>
+<!-- Sub-sección Lista de Turnos -->
+<div *ngIf="subseccionActual === 'listaTurnos'">
+  <h2>Lista de Turnos - Semana del {{ fechaInicioSemana | date:'dd-MM-yyyy' }} al {{ fechaFinSemana | date:'dd-MM-yyyy' }}</h2>
+  
+  <!-- Tabla de Turnos -->
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Especialidad</th>
+        <th>Fecha</th>
+        <th>Hora</th>
+        <th>Medico</th>
+        <th>Disponible</th>
+        <th>Paciente</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let turno of turnos">
+        <td>{{ turno.id }}</td>
+        <td>{{ turno.especialidadId }}</td>
+        <td>{{ turno.fecha | date:'dd-MM-yyyy' }}</td>
+        <td>{{ turno.hora }}</td>
+        <td>{{ turno.medicoId }}</td>
+        <td>{{ turno.disponible === 1 ? 'Sí' : 'No' }}</td>
+        <td>{{ turno.pacienteId ? turno.pacienteId : 'N/A' }}</td>
+      </tr>
+    </tbody>
+   
+  </table>
+</div>
 
 
  <!-- Sub-sección Calendario -->

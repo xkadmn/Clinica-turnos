@@ -8,6 +8,7 @@ import { UsuarioService } from 'src/app/servicios/usuario.service';
 import { EspecialidadService } from 'src/app/servicios/especialidad.service'; 
 import { MedicoService } from 'src/app/servicios/medico.service';
 
+
 @Component({
   selector: 'app-bienvenida2',
   templateUrl: './bienvenida2.component.html',
@@ -21,6 +22,8 @@ export class Bienvenida2Component implements OnInit {
   seccionActual: string = 'agenda'; // 'agenda' o 'habilitar-turnos'
   subseccionActual: string = 'listaTurnos'; // 'calendario' o 'listaTurnos'
   especialidades: Especialidad[] = [];
+  especialidadesMap: { [id: number]: string } = {};
+
   turno: Turno = {
     id: 0,
     especialidadId: 0,
@@ -30,25 +33,33 @@ export class Bienvenida2Component implements OnInit {
     medicoId: 0,
     disponible: 1,
     pacienteId: undefined 
-  };
-  horas = ['08:00', '08:20', '08:40', '09:00', '09:20', '09:40', '10:00']; 
+  }; 
   diasSemana = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
   fechaInicioSemana: Date = new Date(); 
   fechaFinSemana: Date = new Date();
   turnos: Turno[] = [];
-  /*
-  fechaInicioSemana = '01-06-2024'; 
-  fechaFinSemana = '07-06-2024'; */
   horasDisponibles: string[] = [];
   horariosSeleccionados: string[] = [];
   
-
-  
   constructor(private http: HttpClient, public usuarioService: UsuarioService, private especialidadService: EspecialidadService, private medicoService: MedicoService ) {}
+
+  /*ngOnInit(): void {
+    this.usuario = this.usuarioService.getUsuarioLogueado();
+    this.obtenerEspecialidadesMedico()
+      .then(() => {
+        this.generarHorariosDisponibles();
+        this.calcularFechasSemanaActual();
+        this.cargarTurnos();
+      })
+      .catch(error => {
+        console.error('Error al obtener especialidades:', error);
+      });
+  
+  }*/
 
   ngOnInit(): void {
     this.usuario = this.usuarioService.getUsuarioLogueado();
-    this.obtenerEspecialidadesMedico();
+    this.obtenerEspecialidadesMedico(); // Si lo necesitas, vuelve a invocar este método
     this.generarHorariosDisponibles();
     this.calcularFechasSemanaActual();
     this.cargarTurnos();
@@ -67,30 +78,107 @@ export class Bienvenida2Component implements OnInit {
       this.cargarTurnos(); // Asegura que se carguen los turnos cuando cambiamos de subsección
     }
   }
-
+/*
   cargarEspecialidades() {
     this.http.get('/api/especialidades').subscribe((data: any) => {
       this.especialidades = data;
     });
   }
 
-  obtenerEspecialidadesMedico() {
-    const medicoId = 4; 
+
+   // Método obtenerEspecialidadesMedico con corrección para usar el nombre de la clave correcta
+obtenerEspecialidadesMedico(): Promise<void> {
+  const medicoId = 4; // Asume un ID de médico específico para esta llamada
+  return new Promise((resolve, reject) => {
     this.especialidadService.obtenerEspecialidadesMedico(medicoId)
       .subscribe(
         especialidades => {
           this.especialidades = especialidades;
-          console.log('Especialidades del médico:', especialidades);
+    
+          // Crear el mapa de especialidades
+          this.especialidadesMap = especialidades.reduce((map, especialidad) => {
+            map[especialidad.id] = especialidad.nombre;
+            return map;
+          }, {} as { [id: number]: string });
+    
+          console.log('Mapa de Especialidades 111:', this.especialidadesMap);
+          resolve();
         },
         error => {
           console.error('Error al obtener especialidades del médico:', error);
+          reject(error);
         }
       );
-  }
+  });
+}
+*//*
+obtenerEspecialidadesMedico() {
+  const medicoId = 4; // Asume un ID de médico específico para esta llamada
+  this.especialidadService.obtenerEspecialidadesMedico(medicoId).subscribe(
+    especialidades => {
+      this.especialidades = especialidades;
+      // Puedes seguir usando 'especialidades' para otras operaciones si es necesario
+    },
+    error => {
+      console.error('Error al obtener especialidades del médico:', error);
+    }
+  );
+}*/
+obtenerEspecialidadesMedico() {
+  const medicoId = 4; // Asume un ID de médico específico para esta llamada
+  this.especialidadService.obtenerEspecialidadesMedico(medicoId).subscribe(
+    especialidades => {
+      this.especialidades = especialidades;
+
+      // Crear el mapa de especialidades
+      this.especialidadesMap = especialidades.reduce((map, especialidad) => {
+        map[especialidad.id] = especialidad.nombre;
+        return map;
+      }, {} as { [id: number]: string });
+    },
+    error => {
+      console.error('Error al obtener especialidades del médico:', error);
+    }
+  );
+}
+    
+
+cargarTurnos() {
+  const startDate = this.fechaInicioSemana.toISOString().split('T')[0];
+  const endDate = this.fechaFinSemana.toISOString().split('T')[0];
+  console.log('Solicitando turnos desde:', startDate, 'hasta:', endDate);
+
+  this.http.get<Turno[]>(`https://hkoo-clinicaapi.mdbgo.io/api/verturnos?startDate=${startDate}&endDate=${endDate}`).subscribe(
+    (data) => {
+      console.log('Datos de turnos recibidos:', data);
+      this.turnos = Array.isArray(data) ? data : [];
+      this.ordenarTurnos(); // Ordena los turnos después de cargarlos
+      console.log('Turnos cargados:', this.turnos); // Verifica que los turnos se cargan correctamente
+    },
+    (error) => {
+      console.error('Error al obtener los turnos:', error);
+    }
+  );
+}
+
+
+ordenarTurnos() {
+  this.turnos.sort((a, b) => {
+    const fechaA = new Date(a.fecha + 'T' + a.hora);
+    const fechaB = new Date(b.fecha + 'T' + b.hora);
+    return fechaA.getTime() - fechaB.getTime();
+  });
+}
+get especialidadesMapList() {
+  return Object.values(this.especialidadesMap);
+}
+    
+       
+
 
 
     generarHorariosDisponibles() {
-      // Asegúrate de que los horarios disponibles se generen correctamente
+
       this.horasDisponibles = []; // Limpia los horarios anteriores
       const horaInicio = 7 * 60; // 7:00 am en minutos
       const horaFin = 19 * 60 + 40; // 19:40 en minutos
@@ -210,23 +298,4 @@ semanaSiguiente() {
   this.fechaFinSemana.setDate(this.fechaFinSemana.getDate() + 6);
   this.cargarTurnos();
 }
-
-  
-      cargarTurnos() {
-        const startDate = this.fechaInicioSemana.toISOString().split('T')[0];
-        const endDate = this.fechaFinSemana.toISOString().split('T')[0];
-        console.log('Solicitando turnos desde:', startDate, 'hasta:', endDate);
-      
-        this.http.get<Turno[]>(`https://hkoo-clinicaapi.mdbgo.io/api/verturnos?startDate=${startDate}&endDate=${endDate}`).subscribe(
-          (data) => {
-            console.log('Datos recibidos:', data);
-            this.turnos = Array.isArray(data) ? data : [];
-          },
-          (error) => {
-            console.error('Error al obtener los turnos:', error);
-          }
-        );
-      }
-
-  
 }

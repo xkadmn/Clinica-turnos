@@ -1,14 +1,16 @@
+
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Medico,  Especialidad } from 'src/app/entidades/medico';
-import { tap } from 'rxjs/operators'; // Importar tap desde RxJS
-
+import { Observable, BehaviorSubject } from 'rxjs';
+import { tap, map } from 'rxjs/operators';
+import { Especialidad } from 'src/app/entidades/medico';
 @Injectable({
   providedIn: 'root'
 })
 export class EspecialidadService {
   private apiUrl = 'https://hkoo-clinicaapi.mdbgo.io';
+  private especialidadesSubject = new BehaviorSubject<Especialidad[]>([]);
+  especialidades$ = this.especialidadesSubject.asObservable();
 
   constructor(private http: HttpClient) {}
 
@@ -24,5 +26,11 @@ export class EspecialidadService {
   obtenerEspecialidadesMedico(medicoId: number): Observable<Especialidad[]> {
     const url = `${this.apiUrl}/medico/${medicoId}/especialidades`;
     return this.http.get<Especialidad[]>(url);
+  }
+  
+  getEspecialidadPorId(id: number): Observable<Especialidad | undefined> {
+    return this.especialidades$.pipe(
+      map(especialidades => especialidades.find(e => e.id === id))
+    );
   }
 }

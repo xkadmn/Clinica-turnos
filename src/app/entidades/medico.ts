@@ -29,7 +29,7 @@ export interface User1 {
     especialidadId: number;
     fecha: string;
     hora: string;
-    medicoId: number;
+    medicoId?: number;
     disponible: number;
     pacienteId?: number;
   }
