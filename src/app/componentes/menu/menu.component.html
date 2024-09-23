@@ -17,6 +17,7 @@
     </div>
     <span class="navbar-text" *ngIf="usuarioservices.estoyLogueado()">
       {{ usuarioservices.usuarioLogueado.nombre }} {{ usuarioservices.usuarioLogueado.apellido }}
+      <button class="btn btn-link" [routerLink]="'/principal/perfil'">Perfil</button>
     </span>
     <button *ngIf="usuarioservices.estoyLogueado()" class="btn btn-block" (click)="logout()">Cerrar sesión</button>
   </div>

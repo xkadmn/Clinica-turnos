@@ -27,4 +27,8 @@ export class BienvenidaComponent implements OnInit {
   irAPedirTurno() {
     this.router.navigate(['/principal/pedirturno']); // Corregido: navegar hacia '/turnos'
   }
+
+  misturnos() {
+    this.router.navigate(['/principal/misturnos']); // Corregido: navegar hacia '/turnos'
+  }
 }

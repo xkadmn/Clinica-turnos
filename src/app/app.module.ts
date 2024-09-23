@@ -10,7 +10,8 @@ import { Bienvenida3Component } from './componentes/bienvenida3/bienvenida3.comp
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AprobarmedicosComponent } from './componentes/aprobarmedicos/aprobarmedicos.component';
-import { AprobadoPipe } from './pipes/aprobado.pipe'; 
+import { AprobadoPipe } from './pipes/aprobado.pipe';
+import { PerfilComponent } from './componentes/perfil/perfil.component'; 
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { AprobadoPipe } from './pipes/aprobado.pipe';
    // Bienvenida2Component,
     Bienvenida3Component,
     AprobarmedicosComponent,
-    AprobadoPipe
+    AprobadoPipe,
+    PerfilComponent
   ],
   imports: [
     BrowserModule,

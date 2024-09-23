@@ -1,8 +1,8 @@
-import { Injectable, booleanAttribute } from '@angular/core';
-import {  User } from '../entidades/usuario';
-import { HttpClient, provideHttpClient } from '@angular/common/http';
-import { forkJoin, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { User, Perfil } from '../entidades/usuario';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
@@ -107,5 +107,7 @@ export class UsuarioService {
       return this.http.put<any>(`${this.apiurl}/aprobar-medico/${usuarioId}`, { aprobado: nuevoEstado });
     }
 
-    
+    public getPerfilUsuario(usuarioId: number): Observable<Perfil> {
+      return this.http.get<Perfil>(`${this.apiurl}/perfil/${usuarioId}`);
+  }
 }

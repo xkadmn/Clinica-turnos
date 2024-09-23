@@ -1,0 +1,18 @@
+<div *ngIf="usuario">
+    <h2>Perfil de {{ usuario.nombre }} {{ usuario.apellido }}</h2>
+    
+    <p *ngIf="usuario"><strong>Fecha de Nacimiento:</strong> {{ usuario.fecNac | date:'yyyy/MM/dd' }}</p>
+  
+    <p><strong>Correo:</strong> {{ usuario.mail }}</p>
+    <p *ngIf="perfil"><strong>Teléfono 1:</strong> {{ perfil.telefono1 }}</p>
+    <p *ngIf="perfil"><strong>Teléfono 2:</strong> {{ perfil.telefono2 }}</p>
+    <p *ngIf="perfil"><strong>Dirección:</strong> {{ perfil.direccion }}</p>
+    <p *ngIf="perfil"><strong>Localidad:</strong> {{ perfil.localidad }}</p>
+    <p *ngIf="perfil"><strong>Nacionalidad:</strong> {{ perfil.nacionalidad }}</p>
+    <p *ngIf="perfil"><strong>Tipo de Documento:</strong> {{ perfil.documento_tipo }}</p>
+    <p *ngIf="perfil"><strong>Número de Documento:</strong> {{ perfil.documento_id }}</p>
+    <p *ngIf="perfil"><strong>ID de Legajo:</strong> {{ perfil.legajo_id }}</p>
+   
+  
+    <button *ngIf="usuario.tipo === '2'" (click)="verFichaMedico()">Ver Ficha Médico</button>
+</div>
