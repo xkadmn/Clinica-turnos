@@ -1,0 +1,32 @@
+ /* Estilo del menú desplegable */
+ .card-body-perfil {
+ 
+    border-radius: 8px; /* Bordes redondeados */
+    font-family: 'Roboto', sans-serif; /* Fuente similar */
+    font-size: 0.9rem; /* Tamaño de fuente */
+    
+  }
+  
+  .card-text-perfil p {
+    display: flex;
+    align-items: center;
+    padding: 8px 15px;
+    color: #333; /* Color del texto */
+  }
+  
+  .card-text-perfil p:hover {
+    background-color: #f1f1f1; /* Efecto hover */
+    cursor: pointer;
+  }
+
+  .card-body-perfil{
+    width: 300px;
+    height: auto;
+  }
+ 
+    
+  .card-body-perfil:hover {
+    background-color: #f1f1f1; /* Efecto hover */
+    cursor: pointer;
+  }
+  

@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AprobarmedicosComponent } from './componentes/aprobarmedicos/aprobarmedicos.component';
 import { AprobadoPipe } from './pipes/aprobado.pipe';
-import { PerfilComponent } from './componentes/perfil/perfil.component'; 
+//import { PerfilComponent } from './componentes/perfil/perfil.component'; 
 
 @NgModule({
   declarations: [
@@ -21,7 +21,7 @@ import { PerfilComponent } from './componentes/perfil/perfil.component';
     Bienvenida3Component,
     AprobarmedicosComponent,
     AprobadoPipe,
-    PerfilComponent
+   //// PerfilComponent
   ],
   imports: [
     BrowserModule,

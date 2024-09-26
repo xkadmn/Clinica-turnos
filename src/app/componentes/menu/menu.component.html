@@ -5,20 +5,36 @@
       aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ml-auto">
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
         <li class="nav-item">
-          <a type="button" class="btn btn-block" [routerLink]="'/principal/registro'">Registrar</a>
+          <a class="btn btn-outline-primary me-2" [routerLink]="'/principal/registro'">Registrar</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" [routerLink]="'/principal/login'">Login</a>
+          <a class="btn btn-outline-secondary me-2" [routerLink]="'/principal/login'">Login</a>
         </li>
+
+      <br>
+        <span class="navbar-text d-flex align-items-center" *ngIf="usuarioservices.estoyLogueado()">
+
+        <div>
+          {{ usuarioservices.usuarioLogueado.nombre }} {{ usuarioservices.usuarioLogueado.apellido }}
+          </div>
+          <!-- Dropdown para el perfil -->
+          <div class="dropdown ms-3">
+            <button class="btn btn-secondary dropdown-toggle" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+              <img src="img/usuario.png">
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+              <li><app-perfil></app-perfil></li>
+            </ul>
+          </div>
+           <!-- Cerrar sesión --> 
+           <div>
+            <img src="img/cerrar-sesion.png" (click)="logout()">   
+          </div>
+        </span>
       </ul>
     </div>
-    <span class="navbar-text" *ngIf="usuarioservices.estoyLogueado()">
-      {{ usuarioservices.usuarioLogueado.nombre }} {{ usuarioservices.usuarioLogueado.apellido }}
-      <button class="btn btn-link" [routerLink]="'/principal/perfil'">Perfil</button>
-    </span>
-    <button *ngIf="usuarioservices.estoyLogueado()" class="btn btn-block" (click)="logout()">Cerrar sesión</button>
   </div>
 </nav>

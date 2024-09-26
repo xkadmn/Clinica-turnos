@@ -1,9 +1,10 @@
 <p>PRINCIPAL MEDICO</p>
 <div class="container mt-4">
   <h1>Bienvenido, Dr. {{ usuarioService.usuarioLogueado.nombre }} {{ usuarioService.usuarioLogueado.apellido }}</h1>
-    <div class="d-flex justify-content-around mt-4">
-      <button class="btn btn-primary" (click)="mostrarSeccion('agenda')">Ver Agenda</button>
-      <button class="btn btn-secondary" (click)="mostrarSeccion('habilitar-turnos')">Habilitar Turnos</button>
+    <div class="d-flex mt-4">
+      <button class="btn btn-primary me-2" (click)="mostrarSeccion('agenda')">Ver Agenda</button>
+      <button class="btn btn-secondary me-2" (click)="mostrarSeccion('habilitar-turnos')">Habilitar Turnos por Día</button>
+      <button class="btn btn-secondary" (click)="mostrarSeccion('habilitar-turnos-mes')">Habilitar Turnos por Mes</button>
     </div>
 
 
@@ -11,7 +12,7 @@
   <div *ngIf="seccionActual === 'agenda'" class="mt-4">
 
     <!-- Navegación entre subsecciones -->
-    <div class="d-flex justify-content-between my-3">
+    <div class="d-flex justify-content my-3">
       <button class="btn btn-outline-primary" (click)="mostrarSubseccion('calendario')">Calendario</button>
       <button class="btn btn-outline-primary" (click)="mostrarSubseccion('listaTurnos')">Lista de Turnos</button>
     </div>
@@ -70,6 +71,7 @@
 
  <!-- Sub-sección Calendario -->
     <div *ngIf="subseccionActual === 'calendario'">
+      <h2>Calendario de turnos(proximamente)</h2>
       <table class="table table-bordered">
         <thead>
           <tr>
@@ -88,8 +90,8 @@
  
  
   <!-- Sección de Habilitar Turnos -->
-  <div *ngIf="seccionActual === 'habilitar-turnos'" class="mt-4">
-    <h2>Habilitar Turnos</h2>
+  <div *ngIf="seccionActual === 'habilitar-turnos'" class="mt-2">
+    <h2>Habilitar Turnos por día</h2><br> 
     <form (ngSubmit)="habilitarTurno()" #turnoForm="ngForm">
       <div class="form-group">
         <label for="especialidad">Especialidad</label>
@@ -114,4 +116,11 @@
     </form>
   </div>
 
+  <!-- Sección de Habilitar Turnos -->
+  <div *ngIf="seccionActual === 'habilitar-turnos-mes'" class="mt-2">
+    <h2>Habilitar Turnos por mes</h2>
+    
+  </div>
+
+  
 </div>

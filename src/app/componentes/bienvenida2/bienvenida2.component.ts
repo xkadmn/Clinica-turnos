@@ -78,52 +78,7 @@ export class Bienvenida2Component implements OnInit {
       this.cargarTurnos(); // Asegura que se carguen los turnos cuando cambiamos de subsección
     }
   }
-/*
-  cargarEspecialidades() {
-    this.http.get('/api/especialidades').subscribe((data: any) => {
-      this.especialidades = data;
-    });
-  }
 
-
-   // Método obtenerEspecialidadesMedico con corrección para usar el nombre de la clave correcta
-obtenerEspecialidadesMedico(): Promise<void> {
-  const medicoId = 4; // Asume un ID de médico específico para esta llamada
-  return new Promise((resolve, reject) => {
-    this.especialidadService.obtenerEspecialidadesMedico(medicoId)
-      .subscribe(
-        especialidades => {
-          this.especialidades = especialidades;
-    
-          // Crear el mapa de especialidades
-          this.especialidadesMap = especialidades.reduce((map, especialidad) => {
-            map[especialidad.id] = especialidad.nombre;
-            return map;
-          }, {} as { [id: number]: string });
-    
-          console.log('Mapa de Especialidades 111:', this.especialidadesMap);
-          resolve();
-        },
-        error => {
-          console.error('Error al obtener especialidades del médico:', error);
-          reject(error);
-        }
-      );
-  });
-}
-*//*
-obtenerEspecialidadesMedico() {
-  const medicoId = 4; // Asume un ID de médico específico para esta llamada
-  this.especialidadService.obtenerEspecialidadesMedico(medicoId).subscribe(
-    especialidades => {
-      this.especialidades = especialidades;
-      // Puedes seguir usando 'especialidades' para otras operaciones si es necesario
-    },
-    error => {
-      console.error('Error al obtener especialidades del médico:', error);
-    }
-  );
-}*/
 obtenerEspecialidadesMedico() {
   const medicoId = 4; // Asume un ID de médico específico para esta llamada
   this.especialidadService.obtenerEspecialidadesMedico(medicoId).subscribe(
@@ -231,6 +186,12 @@ get especialidadesMapList() {
           console.error('Error al crear turnos:', error);
         }
       );
+    }
+
+    habilitarTurnoMes() {
+      const medicoId = this.usuarioService.usuarioLogueado.id; 
+      // Implementa la lógica para crear turnos por mes aquí
+      // Puedes utilizar un método similar al de habilitarTurno o habilitarTurnoDia
     }
 
     limpiarFormulario() {

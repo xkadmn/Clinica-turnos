@@ -1,0 +1,24 @@
+/* Estilo del botón del perfil */
+.dropdown .btn {
+    background-color: transparent; /* Fondo transparente */
+    border: none; /* Sin bordes */
+    padding: 0; /* Sin padding */
+    color: #333; /* Color del texto */
+  }
+  
+  .dropdown .btn i {
+    font-size: 1.5rem; /* Tamaño del icono */
+  }
+
+ 
+  /* Estilo del texto del perfil */
+  #dropdownMenuButton {
+    font-size: 0.9rem; /* Tamaño del texto */
+    font-weight: bold;
+    color: #333;
+  }
+
+  img{
+    width: 20px; height: 20px; margin-right: 5px;
+  }
+ 
