@@ -1,24 +1,74 @@
-/* Estilo del botón del perfil */
-.dropdown .btn {
-    background-color: transparent; /* Fondo transparente */
-    border: none; /* Sin bordes */
-    padding: 0; /* Sin padding */
-    color: #333; /* Color del texto */
-  }
-  
-  .dropdown .btn i {
-    font-size: 1.5rem; /* Tamaño del icono */
-  }
 
- 
-  /* Estilo del texto del perfil */
-  #dropdownMenuButton {
-    font-size: 0.9rem; /* Tamaño del texto */
+  .navbar {
+    background-color: #ffffff; /* Color claro para la barra */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
     font-weight: bold;
-    color: #333;
-  }
+    color: #B76E79; /* Color del texto del sitio */
+}
 
-  img{
-    width: 20px; height: 20px; margin-right: 5px;
-  }
- 
+.navbar-brand:hover {
+    color: #A25B63; /* Efecto hover en el nombre */
+}
+
+.nav-item .btn {
+    border-radius: 5px; /* Bordes redondeados */
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-outline-primary {
+    color: #B76E79;
+    border-color: #B76E79;
+}
+
+.btn-outline-primary:hover {
+    background-color: #B76E79; /* Fondo al pasar el ratón */
+    color: white;
+}
+
+.btn-outline-secondary {
+    color: #2C2C2C;
+    border-color: #2C2C2C;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #2C2C2C; /* Fondo al pasar el ratón */
+    color: white;
+}
+
+.dropdown-menu {
+    background-color: #FFFFFF; /* Fondo del menú desplegable */
+    border-radius: 5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item {
+    color: #2C2C2C; /* Color de los ítems del dropdown */
+}
+
+.dropdown-item:hover {
+    background-color: #F6F0E6; /* Fondo al pasar el ratón */
+}
+.navbar .btn {
+  border-radius: 5px; /* Bordes redondeados */
+  transition: background-color 0.3s, color 0.3s; /* Transiciones suaves */
+  padding: 0.3rem 0.5rem; /* Padding para botones */
+  color: #B76E79; /* Color del texto */
+}
+
+.navbar .btn-outline-secondary {
+  background-color: rgba(255, 255, 255, 0.1); /* Fondo semi-transparente */
+  border: 1px solid rgba(183, 110, 121, 0.5); /* Borde semi-transparente */
+}
+
+.navbar .btn-outline-secondary:hover {
+  background-color: rgba(183, 110, 121, 0.2); /* Fondo al pasar el ratón */
+  color: white; /* Color del texto al pasar el ratón */
+}
+
+.navbar .btn i {
+  font-size: 24px; /* Tamaño del icono */
+  margin: 0; /* Sin margen para alineación */
+}

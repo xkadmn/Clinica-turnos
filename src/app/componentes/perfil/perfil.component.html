@@ -1,20 +1,16 @@
 
-<div class="container mt-4 perfilcontainer">
-    <div class="card mx-auto" style="max-width: 500px;">
       <div class="card-body-perfil" *ngIf="usuario">
-        <h4 class="card-title text-center">Perfil de {{ usuario.nombre }} {{ usuario.apellido }}</h4>
-        <p class="card-text-perfil"><strong>Fecha de Nacimiento:</strong> {{ usuario.fecNac | date:'yyyy/MM/dd' }}</p>
-        <p class="card-text-perfil"><strong>Correo:</strong> {{ usuario.mail }}</p>
-        <p *ngIf="perfil" class="card-text-perfil"><strong>Teléfono 1:</strong> {{ perfil.telefono1 }}</p>
-        <p *ngIf="perfil" class="card-text-perfil"><strong>Teléfono 2:</strong> {{ perfil.telefono2 }}</p>
-        <p *ngIf="perfil" class="card-text-perfil"><strong>Dirección:</strong> {{ perfil.direccion }}</p>
-        <p *ngIf="perfil" class="card-text-perfil"><strong>Localidad:</strong> {{ perfil.localidad }}</p>
-        <p *ngIf="perfil" class="card-text-perfil"><strong>Nacionalidad:</strong> {{ perfil.nacionalidad }}</p>
-        <p *ngIf="perfil" class="card-text-perfil"><strong>Tipo de Documento:</strong> {{ perfil.documento_tipo }}</p>
-        <p *ngIf="perfil" class="card-text-perfil"><strong>Número de Documento:</strong> {{ perfil.documento_id }}</p>
-        <p *ngIf="perfil" class="card-text-perfil"><strong>ID de Legajo:</strong> {{ perfil.legajo_id }}</p>
+        <h4 class="card-title text-center"> {{ usuario.nombre }} {{ usuario.apellido }}</h4>
+        <p class="card-text-perfil"><a>Fecha de Nacimiento:</a> {{ usuario.fecNac | date:'yyyy/MM/dd' }}</p>
+        <p class="card-text-perfil">{{ usuario.mail }}</p>
+        <p *ngIf="perfil" class="card-text-perfil"> {{ perfil.telefono1 }}</p>
+        <p *ngIf="perfil" class="card-text-perfil"> {{ perfil.telefono2 }}</p>
+        <p *ngIf="perfil" class="card-text-perfil"> {{ perfil.direccion }}</p>
+        <p *ngIf="perfil" class="card-text-perfil"> {{ perfil.localidad }}</p>
+        <p *ngIf="perfil" class="card-text-perfil"> {{ perfil.nacionalidad }}</p>
+        <p *ngIf="perfil" class="card-text-perfil"><a>Tipo de Documento:</a> {{ perfil.documento_tipo }}{{ perfil.documento_id }}</p>
+        <p *ngIf="perfil" class="card-text-perfil"><a>Legajo:</a> {{ perfil.legajo_id }}</p>
         
         <button *ngIf="usuario.tipo === '2'" class="btn btn-primary mt-3" (click)="verFichaMedico()">Ver Ficha Médico</button>
       </div>
-    </div>
-  </div>
+ 

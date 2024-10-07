@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { EspecialidadService } from 'src/app/servicios/especialidad.service';
 import { Especialidad } from 'src/app/entidades/medico';
 import { CommonModule } from '@angular/common';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-pedir-turno',
   templateUrl: './turnos.component.html',
@@ -15,7 +15,7 @@ export class PedirTurnoComponent implements OnInit {
   medicos: any[] = [];
   selectedEspecialidadId: number | null = null;
 
-  constructor(private especialidadService: EspecialidadService) {}
+  constructor(private especialidadService: EspecialidadService,  private router: Router) {}
 
   ngOnInit(): void {
     this.cargarEspecialidades();
@@ -49,6 +49,7 @@ export class PedirTurnoComponent implements OnInit {
     this.especialidadService.getMedicosPorEspecialidad(especialidadId).subscribe(
       (data) => {
         this.medicos = data;
+        console.log('Médicos cargados:', this.medicos); // Agrega este log para verificar
       },
       (error) => {
         console.error('Error al cargar médicos', error);
@@ -57,6 +58,7 @@ export class PedirTurnoComponent implements OnInit {
   }
 
   verAgenda(medicoId: number) {
-    console.log(`Ver agenda del médico con ID: ${medicoId}`);
-  }
+    this.router.navigate(['/principal/agenda-medico', medicoId, { especialidadId: this.selectedEspecialidadId }]);
 }
+}
+

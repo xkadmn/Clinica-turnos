@@ -1,29 +1,32 @@
 <div class="container mt-5">
   <div class="row justify-content-center">
     <div class="col-md-6">
-      <div class="card">
-        <div class="card-header">Login</div>
+      <div class="card logincard">
         <div class="card-body">
-          <form>
+          <form><br> <br>
+            <div class="form-text">
+              <a type="text-strong" >Inicia Sesión</a>
+            </div> <br> <br>
             <div class="form-group">
-              <label for="username">Usuario:</label>
-              <input type="text" [(ngModel)]="usuario.usuario" class="form-control" id="username" name="username" required>
-            </div>
+              <input type="text" [(ngModel)]="usuario.usuario" class="form-control logininput" id="username" name="username" required placeholder="Usuario">
+            </div> <br> <br>
             <div class="form-group">
-              <label for="password">Contraseña:</label>
-              <input type="password" [(ngModel)]="usuario.pass" class="form-control" id="password" name="password" required>
+              <input type="password" [(ngModel)]="usuario.pass" class="form-control logininput" id="password" name="password" required placeholder="Contraseña">
             </div>
-            <input type="button" (click)="login()" value="Ingresar" class="btn btn-primary btn-block">
+            <div id="passwordHelpBlock" class="form-text">
+              Tu contraseña debe tener entre 8 y 20 caracteres, contener letras y números, y no debe contener espacios, caracteres especiales ni emoji.
+            </div>
+            <br> <br>
+            <div class="text-center">
+            <input type="button" (click)="login()" value="Ingresar" class="btn reflejo-boton">
+          </div>
+          <br> <br>
             <div class="form-group form-check">
               <input type="checkbox" class="form-check-input" id="mantenerLogueado" name="mantenerLogueado">
               <label class="form-check-label" for="mantenerLogueado">Mantenerse logueado</label>
             </div>
-
-          </form>
-
-          <hr>
-      
-          <a type="button" class="btn btn-primary btn-block" [routerLink]="'/principal/registro'">Registrar</a>
+         </form>
+          <a type="text-strong" [routerLink]="'/principal/registro'">¿No tienes cuenta? ¡Registrate aquí!</a>
         </div>
       </div>
     </div>

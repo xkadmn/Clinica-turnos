@@ -12,7 +12,7 @@
     <h2>Médicos Disponibles:</h2>
     <div *ngFor="let medico of medicos">
       <p>{{ medico.nombre }} {{ medico.apellido }}</p>
-      <button (click)="verAgenda(medico.id)">VER AGENDA</button>
+      <button (click)="verAgenda(medico.medico_id)">VER AGENDA</button>
     </div>
   </div>
 </div>
