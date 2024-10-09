@@ -29,6 +29,7 @@ import { AgendaMedicoComponent } from './componentes/agenda-medico/agenda-medico
     ErrorComponent,
     HttpClientModule,
     FormsModule
+    
   ],
   providers: [provideHttpClient()],
   bootstrap: [AppComponent]

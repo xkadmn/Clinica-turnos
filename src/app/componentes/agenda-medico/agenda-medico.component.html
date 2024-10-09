@@ -5,7 +5,6 @@
 </div>
 <div class="container">
   <h1>Agenda Médica</h1>
-  
   <table class="table table-bordered">
     <thead>
       <tr>
@@ -13,24 +12,72 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let hora of horas">
+      <tr>
         <td *ngFor="let dia of diasSemana">
-          <!-- Verifica si hay un turno disponible para ese día y hora -->
-          <div *ngIf="horasPorDia[dia].includes(hora)" (click)="abrirTurno(dia, hora)">
-            <button class="btn btn-primary">Turno {{ hora }}</button>
-          </div>
-          <div *ngIf="!horasPorDia[dia].includes(hora)">
-            <span>No disponible</span>
+          <div *ngFor="let hora of horasPorDia[dia]">
+            <button class="btn btn-primary turno" 
+              [ngClass]="{'disponible': isTurnoDisponible(hora), 'no-disponible': !isTurnoDisponible(hora)}"
+              (click)="(idTurno = getTurnoId(dia, hora)) !== undefined ? abrirTurno(idTurno, dia, hora, medicoId) : null" 
+              data-bs-toggle="modal" 
+              data-bs-target="#staticBackdrop">
+              {{ hora }}
+            </button>
           </div>
         </td>
       </tr>
     </tbody>
   </table>
+  <div *ngIf="isModalVisible" class="modal">
+  <!-- Modal -->
+  <div class="modal fade" #modal id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Modal de aceptar</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p><strong>Fecha:</strong> {{ turnoSeleccionado?.fecha | date:'dd-MM-yyyy' }}</p>
+          <p><strong>Hora:</strong> {{ turnoSeleccionado?.hora }}</p>
+          <p><strong>Médico:</strong> {{ turnoSeleccionado?.medicoId }}</p>
+        </div>
+        <div class="modal-footer align-content-center">
+          <button type="button" class="btn aceptarbtn" (click)="aceptarTurno()">Aceptar Turno</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
-
-
+</div>
 <style>
-  .disponible { background-color: green; }
-  .no-disponible { background-color: red; }
+  .disponible {
+    background-color: rgb(79, 167, 79);
+    color: white;
+  }
+  .no-disponible {
+    background-color: rgb(181, 83, 83);
+    color: white;
+  }
+    .turno {
+    padding: 5px;
+    margin: 2px 0;
+    border-radius: 5px; /* Bordes redondeados */
+  }
+  .disponible:hover {
+    background-color:  rgb(174, 236, 174);/* Color al pasar el mouse */
+  }
+  .no-disponible:hover {
+    background-color:  rgb(236, 173, 173);/* Color al pasar el mouse */
+  }
+
+  .aceptarbtn{
+    background-color: rgb(79, 167, 79);
+    color: white;
+  }
+  .aceptarbtn:hover {
+    background-color:  rgb(174, 236, 174);/* Color al pasar el mouse */
+  }
+
+  
 </style>

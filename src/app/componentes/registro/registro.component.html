@@ -1,48 +1,50 @@
 <div class="container mt-5">
   <div class="row justify-content-center">
     <div class="col-md-6">
-      <div class="card">
-        <div class="card-header">Registro</div>
+      <div class="registercard"> <!-- Cambiado a registercard -->
+        <div class="card-header text-center">   <div class="form-text">
+          <a type="text-strong" >Registro</a>
+        </div></div> 
         <div class="card-body">
           <form>
             <div class="form-group">
               <label for="nombre">Nombre:</label>
-              <input type="text" class="form-control" id="nombre" name="nombre" [(ngModel)]="usuario.nombre" required>
+              <input type="text" class="form-control registerinput" id="nombre" name="nombre" [(ngModel)]="usuario.nombre" required>
             </div>
             <div class="form-group">
               <label for="apellido">Apellido:</label>
-              <input type="text" class="form-control" id="apellido" name="apellido" [(ngModel)]="usuario.apellido" required>
+              <input type="text" class="form-control registerinput" id="apellido" name="apellido" [(ngModel)]="usuario.apellido" required>
             </div>
             <div class="form-group">
               <label for="usuario">Usuario:</label>
-              <input type="text" class="form-control" id="usuario" name="usuario" [(ngModel)]="usuario.usuario" required>
+              <input type="text" class="form-control registerinput" id="usuario" name="usuario" [(ngModel)]="usuario.usuario" required>
             </div>
             <div class="form-group">
               <label for="fecNac">Fecha de Nacimiento:</label>
-              <input type="date" class="form-control" id="fecNac" name="fecNac" [(ngModel)]="usuario.fecNac" required>
+              <input type="date" class="form-control registerinput" id="fecNac" name="fecNac" [(ngModel)]="usuario.fecNac" required>
             </div>
             <div class="form-group">
               <label for="mail">Email:</label>
-              <input type="email" class="form-control" id="mail" name="mail" [(ngModel)]="usuario.mail" required>
+              <input type="email" class="form-control registerinput" id="mail" name="mail" [(ngModel)]="usuario.mail" required>
             </div>
             <div class="form-group">
               <label for="tipo">Tipo de Usuario:</label>
-              <select class="form-control" id="tipo" name="tipo" [(ngModel)]="usuario.tipo">
+              <select class="form-control registerinput" id="tipo" name="tipo" [(ngModel)]="usuario.tipo">
                 <option value="1">Usuario</option>
                 <option value="2">Médico</option>
               </select>
             </div>
             <div class="form-group">
               <label for="pass">Contraseña:</label>
-              <input type="password" class="form-control" id="pass" name="pass" [(ngModel)]="usuario.pass" required>
+              <input type="password" class="form-control registerinput" id="pass" name="pass" [(ngModel)]="usuario.pass" required>
             </div>
             <div class="form-group">
               <label for="confirmPass">Repetir contraseña:</label>
-              <input type="password" class="form-control" id="confirmPass" name="confirmPass" [(ngModel)]="pass2" required>
+              <input type="password" class="form-control registerinput" id="confirmPass" name="confirmPass" [(ngModel)]="pass2" required>
             </div>
             <!-- Validación para mostrar el botón de registro -->
             <div class="row mt-3">
-              <input type="button" class="btn btn-primary btn-block" *ngIf="usuario.pass && pass2 && usuario.pass === pass2" (click)="registrar()" value="Registrar">
+              <input type="button" class="register-button btn btn-block" *ngIf="usuario.pass && pass2 && usuario.pass === pass2" (click)="registrar()" value="Aceptar">
             </div>
           </form>
         </div>
