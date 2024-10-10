@@ -1,12 +1,15 @@
-<p>PRINCIPAL ADMINISTRADOR</p>
+<p class="text-start">PRINCIPAL ADMINISTRADOR</p>
 
-<div class="container">
-  <div class="row">
-    <div class="col-md-4">
-      <app-aprobarmedicos></app-aprobarmedicos>
+<div class="container mt-4">
+    <h1 class="text-start">Bienvenido, {{ usuarioService.usuarioLogueado.nombre }} {{ usuarioService.usuarioLogueado.apellido }}</h1>
+    <hr> <!-- Barra separatoria -->
+
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <app-aprobarmedicos></app-aprobarmedicos>
+        </div>
+        <div class="col-md-8">
+            <!-- Puedes agregar otros contenidos aquí para la interfaz de administrador -->
+        </div>
     </div>
-    <div class="col-md-8">
-      <!-- Puedes agregar otros contenidos aquí para la interfaz de administrador -->
-    </div>
-  </div>
 </div>

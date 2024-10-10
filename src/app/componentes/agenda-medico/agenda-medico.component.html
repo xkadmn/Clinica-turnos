@@ -1,10 +1,18 @@
-<h2>Calendario - Semana del {{ fechaInicioSemana | date:'dd-MM-yyyy' }} al {{ fechaFinSemana | date:'dd-MM-yyyy' }}</h2>
-<div class="d-flex justify-content-between my-3">
-  <button class="btn btn-outline-primary" (click)="semanaAnterior()">Semana Anterior</button>
-  <button class="btn btn-outline-primary" (click)="semanaSiguiente()">Semana Siguiente</button>
+<button class="btn" (click)="volver()" style="background: none; border: none; padding: 0;">
+  <i class="bi bi-arrow-left-circle" style="font-size: 36px; font-weight: bold;"></i> <!-- Icono de flecha hacia la izquierda -->
+</button>
+<h1>Agenda Médica</h1>
+<div class="d-flex justify-content-center align-items-center my-3">
+  <button class="btn btn-outline-primary me-2" (click)="semanaAnterior()">
+      <i class="bi bi-arrow-left"></i> <!-- Flecha izquierda -->
+  </button>
+  <span class="mx-2">Semana {{ fechaInicioSemana | date:'dd-MM-yyyy' }} - {{ fechaFinSemana | date:'dd-MM-yyyy' }}</span> <!-- Semana filtrada -->
+  <button class="btn btn-outline-primary ms-2" (click)="semanaSiguiente()">
+      <i class="bi bi-arrow-right"></i> <!-- Flecha derecha -->
+  </button>
 </div>
 <div class="container">
-  <h1>Agenda Médica</h1>
+ 
   <table class="table table-bordered">
     <thead>
       <tr>
@@ -16,25 +24,21 @@
         <td *ngFor="let dia of diasSemana">
           <div *ngFor="let hora of horasPorDia[dia]">
             <button class="btn btn-primary turno" 
-              [ngClass]="{'disponible': isTurnoDisponible(hora), 'no-disponible': !isTurnoDisponible(hora)}"
-              (click)="(idTurno = getTurnoId(dia, hora)) !== undefined ? abrirTurno(idTurno, dia, hora, medicoId) : null" 
-              data-bs-toggle="modal" 
-              data-bs-target="#staticBackdrop">
-              {{ hora }}
-            </button>
+            [ngClass]="{'disponible': isTurnoDisponible(hora), 'no-disponible': !isTurnoDisponible(hora)}"
+            (click)="(idTurno = getTurnoId(dia, hora)) !== undefined ? abrirTurno(idTurno, dia, hora, medicoId) : null">
+            {{ hora }}
+          </button>
           </div>
         </td>
       </tr>
     </tbody>
   </table>
-  <div *ngIf="isModalVisible" class="modal">
-  <!-- Modal -->
-  <div class="modal fade" #modal id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+  <div *ngIf="isModalVisible" class="modal show" tabindex="-1" role="dialog" style="display: block;">
+    <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="staticBackdropLabel">Modal de aceptar</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" (click)="isModalVisible = false" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <p><strong>Fecha:</strong> {{ turnoSeleccionado?.fecha | date:'dd-MM-yyyy' }}</p>
@@ -42,12 +46,11 @@
           <p><strong>Médico:</strong> {{ turnoSeleccionado?.medicoId }}</p>
         </div>
         <div class="modal-footer align-content-center">
-          <button type="button" class="btn aceptarbtn" (click)="aceptarTurno()">Aceptar Turno</button>
+          <button type="button" class="btn aceptarbtn" (click)="aceptarTurno()">Tomar Turno</button>
         </div>
       </div>
     </div>
   </div>
-</div>
 
 </div>
 <style>

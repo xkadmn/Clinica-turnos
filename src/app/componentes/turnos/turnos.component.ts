@@ -60,5 +60,9 @@ export class PedirTurnoComponent implements OnInit {
   verAgenda(medicoId: number) {
     this.router.navigate(['/principal/agenda-medico', medicoId, { especialidadId: this.selectedEspecialidadId }]);
 }
+
+volver() {
+  this.router.navigate(['principal/bienvenida']); // Cambia a la ruta correspondiente
+}
 }
 

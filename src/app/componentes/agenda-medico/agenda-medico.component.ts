@@ -3,13 +3,14 @@ import { TurnoService } from 'src/app/servicios/turno.service';
 import { Turno } from 'src/app/entidades/medico';
 import { ActivatedRoute } from '@angular/router';
 import { UsuarioService } from 'src/app/servicios/usuario.service'; 
-
+import { Router } from '@angular/router'; // Importar Router
 @Component({
   selector: 'app-agenda-medico',
   templateUrl: './agenda-medico.component.html',
   styleUrls: ['./agenda-medico.component.css']
 })
 export class AgendaMedicoComponent implements OnInit {
+  @ViewChild('modal', { static: false }) modal!: ElementRef;
   fechaInicioSemana: Date;
   fechaFinSemana: Date;
   diasSemana: string[] = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes','Sábado','Domingo'];
@@ -25,9 +26,9 @@ export class AgendaMedicoComponent implements OnInit {
   mensajeExito: string = ''; // Para almacenar el mensaje de éxito
   mostrarModalExito: boolean = false; // Para controlar la visibilidad del modal de éxito
   isModalVisible: boolean = false;
-  @ViewChild('modal', { static: false }) modal!: ElementRef;
 
-  constructor(private turnoService: TurnoService, private route: ActivatedRoute, private usuarioService: UsuarioService) {
+
+  constructor(private turnoService: TurnoService, private route: ActivatedRoute, private usuarioService: UsuarioService,  private router: Router) {
     this.setFechasSemana(new Date());
     this.fechaInicioSemana = new Date();
     this.fechaInicioSemana.setDate(this.fechaInicioSemana.getDate() - this.fechaInicioSemana.getDay() + 1); // Ajusta al lunes
@@ -89,22 +90,25 @@ isTurnoDisponible(hora: string): boolean {
   return turno ? turno.disponible === 1 : false; // Devuelve true si disponible es 1, false de lo contrario
 }
 
-
- 
 abrirTurno(id: number, dia: string, hora: string, medicoId: number) {
-  const fechaTurno = new Date(this.fechaInicioSemana); // Usar la fecha de inicio de la semana
-  const diaIndex = this.diasSemana.indexOf(dia); // Obtener el índice del día
-
-  // Sumar el índice del día a la fecha de inicio de la semana para obtener la fecha correcta
+  const fechaTurno = new Date(this.fechaInicioSemana);
+  const diaIndex = this.diasSemana.indexOf(dia);
   fechaTurno.setDate(fechaTurno.getDate() + diaIndex);
 
-  this.turnoSeleccionado = {
-    id: id,
-    fecha: fechaTurno,
-    hora: hora,
-    medicoId: medicoId // Puedes reemplazar esto con el nombre del médico si es necesario
-  };
-  this.isModalVisible = true; 
+  const turno = this.turnos.find(t => t.id === id); // Encuentra el turno correspondiente
+
+  // Solo abrir el modal si el turno está disponible
+  if (turno && turno.disponible === 1) {
+    this.turnoSeleccionado = {
+      id: id,
+      fecha: fechaTurno,
+      hora: hora,
+      medicoId: medicoId
+    };
+    this.isModalVisible = true; 
+  } else {
+    alert('Este turno no está disponible.');
+  }
 }
 
 getTurnoId(dia: string, hora: string): number | undefined {
@@ -156,7 +160,9 @@ obtenerEspecialidadSeleccionada(): number | null {
   return this.especialidadSeleccionadaId; // Retorna el ID de la especialidad seleccionada
 }
 
-
+volver() {
+  this.router.navigate(['principal/pedirturno']); // Cambia a la ruta correspondiente
+}
 
 }
 
