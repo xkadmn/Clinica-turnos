@@ -1,21 +1,35 @@
 <button class="btn" (click)="volver()" style="background: none; border: none; padding: 0;">
-  <i class="bi bi-arrow-left-circle" style="font-size: 36px; font-weight: bold;"></i> <!-- Icono de flecha hacia la izquierda -->
+  <i class="bi bi-arrow-left-circle" style="font-size: 36px; font-weight: bold;"></i>
 </button>
-<div class="container">
+
+<div class="container my-4">
   <h1>Solicita un turno</h1>
 
-  <label for="especialidad">Seleccionar Especialidad:</label>
-  <select id="especialidad" (change)="onEspecialidadChange($event)">
+  <label for="especialidad" class="form-label">Seleccionar Especialidad:</label>
+  <select id="especialidad" class="form-select mb-4" style="max-width: 300px;" (change)="onEspecialidadChange($event)">
     <option *ngFor="let especialidad of especialidades" [value]="especialidad.id">
       {{ especialidad.nombre }}
     </option>
   </select>
 
+  <hr class="my-4" />
+
   <div *ngIf="medicos.length > 0">
-    <h2>Médicos Disponibles:</h2>
-    <div *ngFor="let medico of medicos">
-      <p>{{ medico.nombre }} {{ medico.apellido }}</p>
-      <button (click)="verAgenda(medico.medico_id)">VER AGENDA</button>
+    <h2 class="mb-4">Médicos Disponibles:</h2>
+    <div>
+      <div *ngFor="let medico of medicos" class="card mb-3 shadow-sm" style="max-width: 300px;">
+        <div class="card-body d-flex justify-content-between align-items-center">
+          <div>
+            <h5 class="card-title mb-0" style="font-size: 14px; color: #555;">
+              {{ medico.nombre }}<br>{{ medico.apellido }}
+            </h5>
+            <span style="font-size: 12px; color: #777;">Días: Lunes - Viernes<br>Horarios: 9:00 - 17:00</span>
+          </div>
+          <div>
+            <button class="btn btn-outline-primary btn-sm me-2" (click)="verAgenda(medico.medico_id)">VER AGENDA</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

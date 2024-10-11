@@ -8,7 +8,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class UsuarioService {
-  private apiurl: string = "https://hkoo-clinicaapi.mdbgo.io";
+  // private apiurl: string = "https://hkoo-clinicaapi.mdbgo.io";
+  private apiurl: string = "https://clinicaapi-g1o2.onrender.com";
   public usuarioLogueado: User = {
     id: 0,
     nombre: '',

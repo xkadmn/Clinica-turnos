@@ -7,14 +7,14 @@ import { Medico, Turno } from 'src/app/entidades/medico';
   providedIn: 'root'
 })
 export class MedicoService {
-  private apiUrl = 'https://hkoo-clinicaapi.mdbgo.io'; // Ajusta la URL base de tu API
+  private apiUrl = 'https://clinicaapi-g1o2.onrender.com'; //https://hkoo-clinicaapi.mdbgo.io
 
   constructor(private http: HttpClient) {}
 
   // Obtener especialidades
   getEspecialidades(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/especialidades`).pipe(
-     // catchError(this.handleError)
+    
     );
   }
 

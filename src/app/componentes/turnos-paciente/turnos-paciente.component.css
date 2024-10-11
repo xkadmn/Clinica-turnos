@@ -1,0 +1,4 @@
+/* turnos-paciente.component.css */
+.table th, .table td {
+    text-align: center; /* Centra el texto en las celdas */
+}

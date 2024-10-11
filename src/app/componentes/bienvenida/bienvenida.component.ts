@@ -29,6 +29,6 @@ export class BienvenidaComponent implements OnInit {
   }
 
   misturnos() {
-    this.router.navigate(['/principal/misturnos']); // Corregido: navegar hacia '/turnos'
+    this.router.navigate(['/principal/turnos-paciente']);
   }
 }

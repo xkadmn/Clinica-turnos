@@ -10,6 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AprobarmedicosComponent } from './componentes/aprobarmedicos/aprobarmedicos.component';
 import { AprobadoPipe } from './pipes/aprobado.pipe';
 import { AgendaMedicoComponent } from './componentes/agenda-medico/agenda-medico.component';
+import { TurnosPacienteComponent } from './componentes/turnos-paciente/turnos-paciente.component';
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import { AgendaMedicoComponent } from './componentes/agenda-medico/agenda-medico
     AprobarmedicosComponent,
     AprobadoPipe,
     AgendaMedicoComponent,
+    TurnosPacienteComponent,
  
   ],
   imports: [

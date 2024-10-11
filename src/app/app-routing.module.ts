@@ -11,6 +11,7 @@ import { PedirTurnoComponent } from './componentes/turnos/turnos.component';
 import { UsuarioService } from './servicios/usuario.service'; 
 import  { PerfilComponent }  from './componentes/perfil/perfil.component';
 import { AgendaMedicoComponent } from './componentes/agenda-medico/agenda-medico.component';
+import { TurnosPacienteComponent } from './componentes/turnos-paciente/turnos-paciente.component';
 
 const routes: Routes = [
   {
@@ -25,7 +26,8 @@ const routes: Routes = [
       { path: 'bienvenida3', component: Bienvenida3Component },
       { path: 'pedirturno', component: PedirTurnoComponent },
       { path: 'perfil', component: PerfilComponent },
-      { path: 'agenda-medico/:medicoId', component: AgendaMedicoComponent }
+      { path: 'agenda-medico/:medicoId', component: AgendaMedicoComponent },
+      {path: 'turnos-paciente', component: TurnosPacienteComponent}
 
     ]
   },

@@ -1,0 +1,29 @@
+<button class="btn" (click)="volver()" style="background: none; border: none; padding: 0;">
+    <i class="bi bi-arrow-left-circle" style="font-size: 36px; font-weight: bold;"></i> <!-- Icono de flecha hacia la izquierda -->
+  </button>
+<div class="container mt-5">
+    <h2 class="text-center mb-4" style="font-family: 'Roboto', sans-serif;">Listado de Turnos</h2>
+    
+    <table class="table table-bordered">
+      <thead class="thead-light">
+        <tr>
+          <th>ID</th>
+          <th>Nombre del Médico</th>
+          <th>Nombre de la Especialidad</th>
+          <th>Fecha</th>
+          <th>Hora</th>
+          <th>Disponible</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let turno of turnos">
+          <td>{{ turno.id }}</td>
+          <td>{{ turno.medicoId }}</td>
+          <td>{{ turno.especialidadId }}</td>
+          <td>{{ turno.fecha | date:'dd/MM/yyyy' }}</td>
+          <td>{{ turno.hora }}</td> <!-- Formateando la hora -->
+          <td>{{ turno.disponible ? 'Sí' : 'No' }}</td>
+        </tr>
+      </tbody>
+    </table>
+</div>

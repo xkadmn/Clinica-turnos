@@ -8,10 +8,9 @@ import { Especialidad } from 'src/app/entidades/medico';
   providedIn: 'root'
 })
 export class EspecialidadService {
-  private apiUrl = 'https://hkoo-clinicaapi.mdbgo.io';
+  private apiUrl = 'https://clinicaapi-g1o2.onrender.com'; //https://hkoo-clinicaapi.mdbgo.io
   private especialidadesSubject = new BehaviorSubject<Especialidad[]>([]);
   especialidades$ = this.especialidadesSubject.asObservable();
-
   constructor(private http: HttpClient) {}
 
   getEspecialidades(): Observable<any[]> {

@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Turno } from 'src/app/entidades/medico'; // Asegúrate de que esta ruta sea correcta
+import { Turno } from 'src/app/entidades/medico';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TurnoService {
-  private apiUrl = 'https://hkoo-clinicaapi.mdbgo.io'; // Cambia esto según tu API
+  private apiUrl = 'https://clinicaapi-g1o2.onrender.com'; // https://hkoo-clinicaapi.mdbgo.io
 
   constructor(private http: HttpClient, ) {}
 
@@ -26,6 +26,10 @@ obtenerTurnosPorDia(medicoId: number, especialidadId: number, fecha: string): Ob
 }
 aceptarTurno(turno: any): Observable<any> {
   return this.http.put<any>(`${this.apiUrl}/turnos/${turno.id}`, turno); // Cambia esta URL según tu API
+}
+
+getTurnosPorPaciente(pacienteId: number): Observable<Turno[]> {
+  return this.http.get<Turno[]>(`${this.apiUrl}/turnos/pacienteId/${pacienteId}`);
 }
 
 
