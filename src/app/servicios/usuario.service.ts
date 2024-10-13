@@ -18,7 +18,7 @@ export class UsuarioService {
     pass: '',
     mail: '',
     tipo: '',
-    fecNac: new Date(),
+    fecnac: new Date(),
     aprobado: false,
   };
 
@@ -55,7 +55,7 @@ export class UsuarioService {
         pass: '',
         mail: '',
         tipo: '',
-        fecNac: new Date(),
+        fecnac: new Date(),
         aprobado: false,
       };
     }
@@ -76,7 +76,7 @@ export class UsuarioService {
       pass: '',
       mail: '',
       tipo: '',
-      fecNac: new Date(),
+      fecnac: new Date(),
       aprobado: false,
     };
   }
@@ -110,5 +110,13 @@ export class UsuarioService {
 
     public getPerfilUsuario(usuarioId: number): Observable<Perfil> {
       return this.http.get<Perfil>(`${this.apiurl}/perfil/${usuarioId}`);
+  }
+
+  public actualizarPerfil(perfil: Perfil): Observable<Perfil> {
+    return this.http.put<Perfil>(`${this.apiurl}/perfil/${perfil.usuarioId}`, perfil);
+  }
+
+  cambiarContrasena(usuarioId: number, nuevaContrasena: string): Observable<any> {
+    return this.http.put(`${this.apiurl}/usuarios/${usuarioId}/cambiar-contrasena`, { nuevaContrasena });
   }
 }

@@ -7,7 +7,7 @@ export interface User {
     mail: string;
     usuario: string;
     tipo: string;
-    fecNac?: Date; // Añadir '?' para hacerla opcional
+    fecnac: Date; // Añadir '?' para hacerla opcional
     aprobado: boolean;
   }
 

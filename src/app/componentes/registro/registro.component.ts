@@ -23,7 +23,7 @@ export class RegistroComponent {
     pass: '',
     mail: '',  
     tipo: '',
-    fecNac: new Date(),
+    fecnac: new Date(),
     aprobado: false,
   };
   pass2: string = '';

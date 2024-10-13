@@ -1,16 +1,32 @@
+<div class="card-body-perfil" *ngIf="usuario">
+  <h4 class="card-title text-center">
+    {{ usuario.nombre }} {{ usuario.apellido }}
+    <i class="bi bi-pencil-square edit-icon" (click)="editarPerfil()"></i>
+  </h4>
+  <p class="card-text-perfil">{{ usuario.mail }}</p>
+  <!-- Detalles del perfil aquí... -->
+  
+  <div class="dropdown mt-3">
+    <button class="dropdown-toggle" (click)="toggleDropdown('fichaMedica')" aria-expanded="mostrarFichaMedica">
+      Ficha Médica
+    </button>
+    <ul class="dropdown-menu" [ngClass]="{ show: mostrarFichaMedica }">
+      <li *ngIf="mostrarFichaMedica">
+        <p *ngIf="perfil" class="card-text-perfil">{{ perfil.documento_tipo }}: {{ perfil.documento_id }}</p>
+        <p *ngIf="perfil" class="card-text-perfil">Legajo: {{ perfil.legajo_id }}</p>
+      </li>
+    </ul>
+  </div>
 
-      <div class="card-body-perfil" *ngIf="usuario">
-        <h4 class="card-title text-center"> {{ usuario.nombre }} {{ usuario.apellido }}</h4>
-        <p class="card-text-perfil"><a>Fecha de Nacimiento:</a> {{ usuario.fecNac | date:'yyyy/MM/dd' }}</p>
-        <p class="card-text-perfil">{{ usuario.mail }}</p>
-        <p *ngIf="perfil" class="card-text-perfil"> {{ perfil.telefono1 }}</p>
-        <p *ngIf="perfil" class="card-text-perfil"> {{ perfil.telefono2 }}</p>
-        <p *ngIf="perfil" class="card-text-perfil"> {{ perfil.direccion }}</p>
-        <p *ngIf="perfil" class="card-text-perfil"> {{ perfil.localidad }}</p>
-        <p *ngIf="perfil" class="card-text-perfil"> {{ perfil.nacionalidad }}</p>
-        <p *ngIf="perfil" class="card-text-perfil"><a>Tipo de Documento:</a> {{ perfil.documento_tipo }}{{ perfil.documento_id }}</p>
-        <p *ngIf="perfil" class="card-text-perfil"><a>Legajo:</a> {{ perfil.legajo_id }}</p>
-        
-        <button *ngIf="usuario.tipo === '2'" class="btn btn-primary mt-3" (click)="verFichaMedico()">Ver Ficha Médico</button>
-      </div>
- 
+  <div class="dropdown mt-3">
+    <button class="dropdown-toggle" (click)="toggleDropdown('cambiarContrasena')" aria-expanded="mostrarCambiarContrasena">
+      Cambiar Contraseña
+    </button>
+    <ul class="dropdown-menu" [ngClass]="{ show: mostrarCambiarContrasena }">
+      <li *ngIf="mostrarCambiarContrasena">
+        <input class="form-control" [(ngModel)]="nuevaContrasena" type="password" placeholder="Nueva contraseña" />
+        <button class="btn btn-success mt-2" (click)="guardarContrasena()">Guardar Contraseña</button>
+      </li>
+    </ul>
+  </div>
+</div>
