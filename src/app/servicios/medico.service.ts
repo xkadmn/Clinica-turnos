@@ -39,20 +39,16 @@ export class MedicoService {
     );
   }
 
+  
   habilitarTurno(turnos: Turno[]): Observable<any> {
-    // Realizar la solicitud HTTP POST para crear múltiples turnos
-    return this.http.post(`${this.apiUrl}/api/turnos`, turnos);
+    return this.http.post(`${this.apiUrl}/api/turnos`, turnos).pipe(
+      catchError(this.handleError)
+    );
   }
- /* // Manejo de errores
+  
   private handleError(error: HttpErrorResponse) {
-    if (error.error instanceof ErrorEvent) {
-      // Error del lado del cliente
-      console.error('Error del lado del cliente:', error.error.message);
-    } else {
-      // El servidor devolvió un código de error
-      console.error(`Código de error ${error.status}, ` + `Mensaje: ${error.message}`);
-    }
-    // Retorna un observable con un mensaje de error
-    return throwError('Hubo un problema al cargar los datos. Por favor, intenta nuevamente más tarde.');
-  }*/
+    // Manejo de errores
+    return throwError('Error en la solicitud, por favor intente nuevamente.');
+  }
+
 }

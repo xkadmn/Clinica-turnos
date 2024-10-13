@@ -40,26 +40,17 @@ export class Bienvenida2Component implements OnInit {
   turnos: Turno[] = [];
   horasDisponibles: string[] = [];
   horariosSeleccionados: string[] = [];
+  turnoMes: any = {
+    especialidadId: 0,
+    mes: '', 
+  };
+  diasSeleccionados: string[] = [];
   
   constructor(private http: HttpClient, public usuarioService: UsuarioService, private especialidadService: EspecialidadService, private medicoService: MedicoService ) {}
 
-  /*ngOnInit(): void {
-    this.usuario = this.usuarioService.getUsuarioLogueado();
-    this.obtenerEspecialidadesMedico()
-      .then(() => {
-        this.generarHorariosDisponibles();
-        this.calcularFechasSemanaActual();
-        this.cargarTurnos();
-      })
-      .catch(error => {
-        console.error('Error al obtener especialidades:', error);
-      });
-  
-  }*/
-
   ngOnInit(): void {
     this.usuario = this.usuarioService.getUsuarioLogueado();
-    this.obtenerEspecialidadesMedico(); // Si lo necesitas, vuelve a invocar este método
+    this.obtenerEspecialidadesMedico();
     this.generarHorariosDisponibles();
     this.calcularFechasSemanaActual();
     this.cargarTurnos();
@@ -147,11 +138,12 @@ get especialidadesMapList() {
 
     seleccionarHorario(hora: string) {
       if (this.horariosSeleccionados.includes(hora)) {
-        this.horariosSeleccionados = this.horariosSeleccionados.filter(h => h !== hora);
+          this.horariosSeleccionados = this.horariosSeleccionados.filter(h => h !== hora);
       } else {
-        this.horariosSeleccionados.push(hora);
+          this.horariosSeleccionados.push(hora);
       }
-    }
+      console.log(this.horariosSeleccionados); // Verifica los horarios seleccionados
+  }
 
     habilitarTurno() {
       
@@ -188,11 +180,97 @@ get especialidadesMapList() {
       );
     }
 
-    habilitarTurnoMes() {
-      const medicoId = this.usuarioService.usuarioLogueado.id; 
-      // Implementa la lógica para crear turnos por mes aquí
-      // Puedes utilizar un método similar al de habilitarTurno o habilitarTurnoDia
+    // Método para seleccionar días de la semana
+seleccionarDia(dia: string) {
+  if (this.diasSeleccionados.includes(dia)) {
+      this.diasSeleccionados = this.diasSeleccionados.filter(d => d !== dia);
+  } else {
+      this.diasSeleccionados.push(dia);
+  }
+}
+
+seleccionarHorarioMes(hora: string) {
+  if (this.horariosSeleccionados.includes(hora)) {
+    this.horariosSeleccionados = this.horariosSeleccionados.filter(h => h !== hora);
+  } else {
+    this.horariosSeleccionados.push(hora);
+  }
+}
+habilitarTurnoMes() {
+  const medicoId = this.usuarioService.usuarioLogueado.id; 
+  const turnosACrear: Turno[] = [];
+  const fecha = new Date(this.turnoMes.mes + "-01");
+  const diasDelMes = new Date(fecha.getFullYear(), fecha.getMonth() + 1, 0).getDate();
+
+  console.log('Días seleccionados:', this.diasSeleccionados);
+  console.log('Horarios seleccionados:', this.horariosSeleccionados);
+
+  if (this.diasSeleccionados.length === 0 || this.horariosSeleccionados.length === 0) {
+    console.error('No se han seleccionado días o horarios.');
+    return;
+  }
+
+  for (let dia = 1; dia <= diasDelMes; dia++) {
+    const fechaTurno = new Date(fecha.getFullYear(), fecha.getMonth(), dia);
+    const diaSemana = fechaTurno.toLocaleString('es-ES', { weekday: 'long' }).toLowerCase().trim();
+
+    console.log(`Verificando día: ${dia} => ${diaSemana}`);
+
+    // Comparar con los días seleccionados en minúsculas
+    const diasSeleccionadosLower = this.diasSeleccionados.map(d => d.toLowerCase());
+
+    if (diasSeleccionadosLower.includes(diaSemana)) {
+      for (const hora of this.horariosSeleccionados) {
+        console.log(`Creando turno para ${diaSemana} a las ${hora}`);
+        const turno: Turno = {
+          id: undefined,
+          especialidadId: this.turnoMes.especialidadId,
+          fecha: fechaTurno.toISOString().split('T')[0], // Formato YYYY-MM-DD
+          hora: hora,
+          medicoId: medicoId,
+          disponible: 1,
+          pacienteId: undefined
+        };
+        turnosACrear.push(turno);
+      }
     }
+  }
+
+  console.log('Turnos a crear:', turnosACrear);
+
+  if (turnosACrear.length === 0) {
+    console.error('No se han creado turnos, verifica la lógica.');
+    return;
+  }
+
+  this.medicoService.habilitarTurno(turnosACrear).subscribe(
+    (response: any) => {
+      console.log('Turnos creados:', response);
+      this.limpiarFormularioMes();
+    },
+    (error: any) => {
+      console.error('Error al crear turnos:', error);
+    }
+  );
+}
+
+
+
+
+
+
+
+
+
+// Método para limpiar el formulario de habilitar turnos por mes
+limpiarFormularioMes() {
+  this.turnoMes = {
+      especialidadId: 0,
+      mes: '',
+  };
+  this.diasSeleccionados = [];
+  this.horariosSeleccionados = [];
+}
 
     limpiarFormulario() {
       this.turno = {

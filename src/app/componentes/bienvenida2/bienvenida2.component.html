@@ -109,7 +109,39 @@
     </div>
 
     <!-- Sección de Habilitar Turnos -->
-    <div *ngIf="seccionActual === 'habilitar-turnos-mes'" class="mt-2">
-        <h2 class="text-start">Habilitar Turnos por mes</h2>
-    </div>
+    <!-- Sección de Habilitar Turnos por mes -->
+<div *ngIf="seccionActual === 'habilitar-turnos-mes'" class="mt-2">
+    <h2 class="text-start">Habilitar Turnos por mes</h2>
+    <form (ngSubmit)="habilitarTurnoMes()" #turnoMesForm="ngForm">
+        <div class="form-group">
+            <label for="especialidad">Especialidad</label>
+            <select id="especialidad" class="form-control" [(ngModel)]="turnoMes.especialidadId" name="especialidad" required>
+                <option *ngFor="let especialidad of especialidades" [value]="especialidad.id">{{ especialidad.nombre }}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="mes">Mes</label>
+            <input type="month" id="mes" class="form-control" [(ngModel)]="turnoMes.mes" name="mes" required>
+        </div>
+        <div class="form-group">
+            <label>Días de la Semana</label><br>
+            <div *ngFor="let dia of diasSemana">
+                <label>
+                    <input type="checkbox" [value]="dia" (change)="seleccionarDia(dia)" [checked]="diasSeleccionados.includes(dia)">
+                    {{ dia }}
+                </label>
+            </div>
+        </div>
+        <div class="form-group" *ngIf="turnoMes.especialidadId && diasSeleccionados.length > 0">
+            <label>Horarios Disponibles</label><br>
+            <div *ngFor="let hora of horasDisponibles">
+                <label>
+                    <input type="checkbox" [value]="hora" (change)="seleccionarHorarioMes(hora)" [checked]="horariosSeleccionados.includes(hora)">
+                    {{ hora }}
+                </label>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary" [disabled]="!turnoMesForm.form.valid || horariosSeleccionados.length === 0">Habilitar Turnos</button>
+    </form>
+</div>
 </div>
