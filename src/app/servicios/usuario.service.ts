@@ -113,10 +113,11 @@ export class UsuarioService {
   }
 
   public actualizarPerfil(perfil: Perfil): Observable<Perfil> {
-    return this.http.put<Perfil>(`${this.apiurl}/perfil/${perfil.usuarioId}`, perfil);
+    return this.http.put<Perfil>(`${this.apiurl}/perfil/${perfil.id}`, perfil);
   }
 
-  cambiarContrasena(usuarioId: number, nuevaContrasena: string): Observable<any> {
-    return this.http.put(`${this.apiurl}/usuarios/${usuarioId}/cambiar-contrasena`, { nuevaContrasena });
-  }
+ 
+cambiarContrasena(userId: number, nuevaContrasena: string) {
+  return this.http.put(`/api/usuarios/${userId}/cambiarContrasena`, { nuevaContrasena });
+}
 }

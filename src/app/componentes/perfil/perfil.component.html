@@ -1,32 +1,89 @@
 <div class="card-body-perfil" *ngIf="usuario">
   <h4 class="card-title text-center">
     {{ usuario.nombre }} {{ usuario.apellido }}
-    <i class="bi bi-pencil-square edit-icon" (click)="editarPerfil()"></i>
+    <i class="bi bi-pencil-square edit-icon" (click)="editarPerfil($event)"></i>
   </h4>
-  <p class="card-text-perfil">{{ usuario.mail }}</p>
-  <!-- Detalles del perfil aquí... -->
-  
-  <div class="dropdown mt-3">
-    <button class="dropdown-toggle" (click)="toggleDropdown('fichaMedica')" aria-expanded="mostrarFichaMedica">
-      Ficha Médica
-    </button>
-    <ul class="dropdown-menu" [ngClass]="{ show: mostrarFichaMedica }">
-      <li *ngIf="mostrarFichaMedica">
-        <p *ngIf="perfil" class="card-text-perfil">{{ perfil.documento_tipo }}: {{ perfil.documento_id }}</p>
-        <p *ngIf="perfil" class="card-text-perfil">Legajo: {{ perfil.legajo_id }}</p>
-      </li>
-    </ul>
-  </div>
 
-  <div class="dropdown mt-3">
-    <button class="dropdown-toggle" (click)="toggleDropdown('cambiarContrasena')" aria-expanded="mostrarCambiarContrasena">
-      Cambiar Contraseña
-    </button>
-    <ul class="dropdown-menu" [ngClass]="{ show: mostrarCambiarContrasena }">
-      <li *ngIf="mostrarCambiarContrasena">
-        <input class="form-control" [(ngModel)]="nuevaContrasena" type="password" placeholder="Nueva contraseña" />
-        <button class="btn btn-success mt-2" (click)="guardarContrasena()">Guardar Contraseña</button>
-      </li>
-    </ul>
+  <!-- Detalles del perfil -->
+  <p class="card-text-perfil">{{ usuario.mail }}</p>
+  <p *ngIf="perfil" class="card-text-perfil">
+    <span *ngIf="isEditing">
+      <input [(ngModel)]="perfil.telefono1" type="text" />
+    </span>
+    <span *ngIf="!isEditing">{{ perfil.telefono1 }}</span>
+  </p>
+
+  <p *ngIf="perfil" class="card-text-perfil">
+    <span *ngIf="isEditing">
+      <input [(ngModel)]="perfil.telefono2" type="text" />
+    </span>
+    <span *ngIf="!isEditing">{{ perfil.telefono2 }}</span>
+  </p>
+
+  <p *ngIf="perfil" class="card-text-perfil">
+    <span *ngIf="isEditing">
+      <input [(ngModel)]="perfil.direccion" type="text" />
+    </span>
+    <span *ngIf="!isEditing">{{ perfil.direccion }}</span>
+  </p>
+
+  <p *ngIf="perfil" class="card-text-perfil">
+    <span *ngIf="isEditing">
+      <input [(ngModel)]="perfil.localidad" type="text" />
+    </span>
+    <span *ngIf="!isEditing">{{ perfil.localidad }}</span>
+  </p>
+
+  <p *ngIf="perfil" class="card-text-perfil">
+    <span *ngIf="isEditing">
+      <input [(ngModel)]="perfil.nacionalidad" type="text" />
+    </span>
+    <span *ngIf="!isEditing">{{ perfil.nacionalidad }}</span>
+  </p>
+
+  <p class="card-text-perfil"><a>Nacimiento:</a> {{ usuario.fecnac | date:'yyyy/MM/dd' }}</p>
+  <p *ngIf="perfil" class="card-text-perfil">{{ perfil.documento_tipo }}: {{ perfil.documento_id }}</p>
+  <p *ngIf="perfil" class="card-text-perfil"><a>Legajo:</a> {{ perfil.legajo_id }}</p>
+  <div *ngIf="mensajeExito" class="alert alert-success">{{ mensajeExito }}</div>
+  <div *ngIf="mensajeError" class="alert alert-danger">{{ mensajeError }}</div>
+  <button *ngIf="isEditing" class="btn btn-success mt-3" (click)="guardarCambios($event)">Guardar</button>
+</div>
+
+<div class="dropdown mt-3">
+  <button class="dropdown-toggle" id="dropdownOpciones" (click)="toggleOpciones($event)" aria-expanded="mostrarOpciones">
+    Opciones
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownOpciones" [ngClass]="{ show: mostrarOpciones }">
+    <li *ngIf="isTipoUsuario2()">
+      <span (click)="abrirModal('fichaMedica', $event)">Ver Ficha Médica</span>
+      <i class="bi bi-eye" (click)="abrirModal('fichaMedica', $event)"></i>
+    </li>
+    <li>
+      <span (click)="abrirModal('cambiarContrasena',$event)">Cambiar Contraseña</span>
+      <i class="bi bi-key" (click)="abrirModal('cambiarContrasena',$event)"></i>
+    </li>
+  </ul>
+</div>
+
+<!-- Modal para Ficha Médica -->
+<div class="modal" *ngIf="modalTipo === 'fichaMedica'">
+  <div class="modal-content">
+    <span class="close" (click)="cerrarModal()">&times;</span>
+    <h2>Ficha Médica</h2>
+    <p *ngIf="perfil">{{ perfil.documento_tipo }}: {{ perfil.documento_id }}</p>
+    <p *ngIf="perfil">Legajo: {{ perfil.legajo_id }}</p>
+  </div>
+</div>
+
+<!-- Modal para Cambiar Contraseña -->
+<div class="modal" *ngIf="modalTipo === 'cambiarContrasena'">
+  <div class="modal-content">
+    <span class="close" (click)="cerrarModal()">&times;</span>
+    <h2>Cambiar Contraseña</h2>
+    <input class="form-control" [(ngModel)]="nuevaContrasena" type="password" placeholder="Nueva contraseña" />
+    <button class="btn btn-success mt-2" (click)="guardarContrasena()">Guardar Contraseña</button>
+    <div *ngIf="mensajeError" class="alert alert-danger mt-2">
+      {{ mensajeError }}
+    </div>
   </div>
 </div>
