@@ -25,4 +25,7 @@ export class TurnosPacienteComponent implements OnInit {
   volver() {
     this.router.navigate(['principal/bienvenida']); // Cambia a la ruta correspondiente
   }
+  cancelarTurno(){
+
+  }
 }

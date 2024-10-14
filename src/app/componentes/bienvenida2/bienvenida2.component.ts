@@ -337,4 +337,8 @@ semanaSiguiente() {
   this.fechaFinSemana.setDate(this.fechaFinSemana.getDate() + 6);
   this.cargarTurnos();
 }
+cancelarTurno(){
+
+}
+
 }

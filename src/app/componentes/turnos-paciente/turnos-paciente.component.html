@@ -2,27 +2,29 @@
     <i class="bi bi-arrow-left-circle" style="font-size: 36px; font-weight: bold;"></i> <!-- Icono de flecha hacia la izquierda -->
   </button>
 <div class="container mt-5">
-    <h2 class="text-center mb-4" style="font-family: 'Roboto', sans-serif;">Listado de Turnos</h2>
+    <h2 class="text-center mb-2" style="font-family: 'Roboto', sans-serif; font-size: 20px; color: #555;">Listado de Turnos</h2>
     
     <table class="table table-bordered">
-      <thead class="thead-light">
+      <thead class="thead-light" style="font-family: 'Roboto', sans-serif; font-size: 14px; color: #555;">
         <tr>
           <th>ID</th>
-          <th>Nombre del Médico</th>
-          <th>Nombre de la Especialidad</th>
+          <th>Médico</th>
+          <th>Especialidad</th>
           <th>Fecha</th>
           <th>Hora</th>
-          <th>Disponible</th>
+          <th>Estado</th>
+          <td>Acciones</td>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let turno of turnos">
+        <tr *ngFor="let turno of turnos" style="font-family: 'Roboto', sans-serif; font-size: 12px; color: #555;">
           <td>{{ turno.id }}</td>
           <td>{{ turno.medicoId }}</td>
           <td>{{ turno.especialidadId }}</td>
           <td>{{ turno.fecha | date:'dd/MM/yyyy' }}</td>
           <td>{{ turno.hora }}</td> <!-- Formateando la hora -->
-          <td>{{ turno.disponible ? 'Sí' : 'No' }}</td>
+          <td>{{ turno.disponible ? 'Pendiente' : 'Terminado' }}</td>
+          <td><i class="bi bi-x-circle" (click)="cancelarTurno()"></i></td>
         </tr>
       </tbody>
     </table>

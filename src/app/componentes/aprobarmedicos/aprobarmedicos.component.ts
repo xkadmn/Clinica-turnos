@@ -12,8 +12,10 @@ export class AprobarmedicosComponent implements OnInit {
   medicos: User[] = [];
   medicosFiltrados: User[] = [];
   filtroEstado: string = 'noAprobados';
+  mensajeVisible: boolean = false;
+  mensaje: string = '';
 
-  constructor(private usuarioService: UsuarioService) { }
+  constructor(private usuarioService: UsuarioService) {}
 
   ngOnInit(): void {
     this.getMedicos();
@@ -41,9 +43,6 @@ export class AprobarmedicosComponent implements OnInit {
     }
   }
 
-  verFicha(usuarioId: number) {
-    // Implementa lógica para ver la ficha del usuario con el ID proporcionado
-  }
 
   cambiarEstadoAprobacion(usuario: User) {
     const nuevoEstado = !usuario.aprobado;
@@ -51,6 +50,9 @@ export class AprobarmedicosComponent implements OnInit {
       () => {
         usuario.aprobado = nuevoEstado;
         this.filtrarMedicos();
+        
+        // Mostrar mensaje
+        this.mostrarMensaje(nuevoEstado ? 'Usuario aprobado' : 'Usuario desaprobado');
       },
       error => {
         console.log(`Error al ${nuevoEstado ? 'aprobar' : 'desaprobar'} médico con ID ${usuario.id}:`, error);
@@ -72,5 +74,23 @@ export class AprobarmedicosComponent implements OnInit {
         btn.classList.remove('btn-hover');
       }
     });
+  }
+
+  mostrarMensaje(mensaje: string) {
+    this.mensaje = mensaje;
+    this.mensajeVisible = true;
+
+    // Ocultar el mensaje después de 2 segundos
+    setTimeout(() => {
+      this.mensajeVisible = false;
+    }, 2000);
+  }
+
+  
+  verFicha(usuarioId: number) {
+   
+  }
+  verPerfil(usuarioId: number) {
+    
   }
 }

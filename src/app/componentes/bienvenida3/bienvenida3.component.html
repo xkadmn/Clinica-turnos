@@ -2,14 +2,33 @@
 
 <div class="container mt-4">
     <h1 class="text-start">Bienvenido, {{ usuarioService.usuarioLogueado.nombre }} {{ usuarioService.usuarioLogueado.apellido }}</h1>
-    <hr> <!-- Barra separatoria -->
+    <hr>
+    
+    <!-- Navegación entre secciones -->
+    <div class="d-flex justify-content-start mb-3">
+        <button class="btn btn-primary me-2" (click)="mostrarSeccion('medicos')">Aprobar Médicos</button>
+        <button class="btn btn-secondary me-2" (click)="mostrarSeccion('pacientes')">Aprobar Pacientes</button>
+        <button class="btn btn-secondary" (click)="mostrarSeccion('administradores')">Aprobar Administradores</button>
+    </div>
 
     <div class="row mt-4">
         <div class="col-md-4">
-            <app-aprobarmedicos></app-aprobarmedicos>
+            <!-- Contenido para cada sección -->
+            <ng-container *ngIf="seccionActual === 'medicos'">
+                <app-aprobarmedicos></app-aprobarmedicos>
+            </ng-container>
+
+            <ng-container *ngIf="seccionActual === 'pacientes'">
+                <!--  <app-aprobarpacientes></app-aprobarpacientes>-->
+            </ng-container>
+
+            <ng-container *ngIf="seccionActual === 'administradores'">
+                <!--  <app-aprobaradministradores></app-aprobaradministradores>-->
+            </ng-container>
         </div>
         <div class="col-md-8">
-            <!-- Puedes agregar otros contenidos aquí para la interfaz de administrador -->
+            <!-- Espacio -->
         </div>
     </div>
 </div>
+

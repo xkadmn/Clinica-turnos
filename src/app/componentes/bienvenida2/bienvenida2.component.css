@@ -21,3 +21,25 @@
   .turnos-container {
     min-height: 50px;
   }
+  .agenda-container {
+    height: 100vh; /* Ocupa toda la altura de la pantalla */
+    padding: 20px; /* Agrega un poco de espacio interior */
+    font-size: 1.2rem; /* Tamaño de letra más grande */
+    overflow-y: auto; /* Permite el scroll si el contenido excede la altura */
+}
+
+h2 {
+    margin-bottom: 1rem; /* Espacio inferior entre el título y el contenido */
+}
+
+
+.horario-cuadrado {
+  width: 100px; /* Ancho fijo para los horarios */
+  height: 50px; /* Altura fija */
+  background-color: #EAEAEA; /* Color de fondo */
+  border-radius: 5px;
+  margin: 5px; /* Espaciado entre horarios */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
