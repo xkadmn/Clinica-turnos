@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { User, Perfil } from '../entidades/usuario';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of} from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 
 @Injectable({
@@ -18,12 +19,10 @@ export class UsuarioService {
     pass: '',
     mail: '',
     tipo: '',
-    fecnac: new Date(),
+    fecnac: '',
     aprobado: false,
   };
-
   public listaUsuarios: User[] = []; 
-  
 
   constructor(private http: HttpClient) {
     this.setLogueado();
@@ -55,15 +54,26 @@ export class UsuarioService {
         pass: '',
         mail: '',
         tipo: '',
-        fecnac: new Date(),
+        fecnac: '',
         aprobado: false,
       };
     }
   }
+  public obtenerUltimoId(): Observable<number> {
+    return this.http.get<number>(`${this.apiurl}/ultimo-id`);
+  }
+  registrarUsuario(usuario: User): Observable<any> {
+    return this.http.post(`${this.apiurl}/insertar`, usuario);
+  }
+  registrarPerfil(usuarioId: number, perfil: any): Observable<any> {
+    return this.http.post(`${this.apiurl}/perfil/${usuarioId}`, perfil);
+  }
+  registrarFichaMedica(usuarioId: number, fichaMedica: any): Observable<any> {
+    return this.http.post(`${this.apiurl}/ficha-medica/${usuarioId}`, fichaMedica);
+  }
 
-  public registrar(usuario: User): Observable<any> {
-    usuario.aprobado = (usuario.tipo === '2') ? false : true;
-    return this.http.post<any>(`${this.apiurl}/insertar`, usuario);
+  registrarEspecialidades(usuarioId: number, especialidades: string[]): Observable<any> {
+    return this.http.post(`${this.apiurl}/especialidades/${usuarioId}`, { especialidades });
   }
 
   public logout() {
@@ -76,7 +86,7 @@ export class UsuarioService {
       pass: '',
       mail: '',
       tipo: '',
-      fecnac: new Date(),
+      fecnac: '',
       aprobado: false,
     };
   }
@@ -84,12 +94,9 @@ export class UsuarioService {
   public estoyLogueado(): boolean {
     return this.usuarioLogueado.usuario !== '';
   }
-
   public getUsuarioLogueado(): User | null {
     return this.usuarioLogueado;
   }
-
-
 //medico no aprobado y aprobar medico para usuario tipo 3
     getMedicosNoAprobados(): Observable<User[]> {
       return this.http.get<User[]>(`${this.apiurl}/medicos-pendientes`);
@@ -115,8 +122,6 @@ export class UsuarioService {
   public actualizarPerfil(perfil: Perfil): Observable<Perfil> {
     return this.http.put<Perfil>(`${this.apiurl}/perfil/${perfil.id}`, perfil);
   }
-
- 
 cambiarContrasena(userId: number, nuevaContrasena: string) {
   return this.http.put(`/api/usuarios/${userId}/cambiarContrasena`, { nuevaContrasena });
 }

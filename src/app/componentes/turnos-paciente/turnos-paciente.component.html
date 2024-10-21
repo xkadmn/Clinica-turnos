@@ -21,9 +21,13 @@
           <td>{{ turno.id }}</td>
           <td>{{ turno.medicoId }}</td>
           <td>{{ turno.especialidadId }}</td>
-          <td>{{ turno.fecha | date:'dd/MM/yyyy' }}</td>
+          <td>{{ turno.fecha }}</td> 
           <td>{{ turno.hora }}</td> <!-- Formateando la hora -->
-          <td>{{ turno.disponible ? 'Pendiente' : 'Terminado' }}</td>
+          <td>
+            <ul *ngFor="let turno of turnos">
+              Turno para {{ turno.fecha }} a las {{ turno.hora }}: {{ obtenerEstado(turno) }}
+            </ul>
+          </td>
           <td><i class="bi bi-x-circle" (click)="cancelarTurno()"></i></td>
         </tr>
       </tbody>

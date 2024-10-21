@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Turno } from 'src/app/entidades/medico';
-
+import { Turno , Medico , Especialidad} from 'src/app/entidades/medico';
+import { tap } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
@@ -29,9 +29,10 @@ aceptarTurno(turno: any): Observable<any> {
 }
 
 getTurnosPorPaciente(pacienteId: number): Observable<Turno[]> {
-  return this.http.get<Turno[]>(`${this.apiUrl}/turnos/pacienteId/${pacienteId}`);
+  return this.http.get<Turno[]>(`${this.apiUrl}/turnos/pacienteId/${pacienteId}`).pipe(
+    tap(turnos => console.log('Turnos obtenidos:', turnos)) // Agrega este log
+  );
 }
-
 
 
 }

@@ -22,7 +22,7 @@ export class LoginComponent {
     pass: '',
     mail: '',   // Asegúrate de que mail está aquí
     tipo: '',
-    fecnac: new Date(),
+    fecnac: '',
     aprobado: true,
   };        
   public listaUsuarios: User[] = []; 
