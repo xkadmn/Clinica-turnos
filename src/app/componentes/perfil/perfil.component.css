@@ -1,0 +1,56 @@
+.profile-card {
+  min-width: 280px;
+  background: #ffffff;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: 'Roboto', sans-serif;
+  color: #555;
+}
+
+.profile-card h5 {
+  font-size: 1rem;
+  color: #333;
+}
+
+.profile-card ul li {
+  padding: 0.25rem 0;
+  font-size: 0.875rem;
+}
+
+.profile-card .edit-icon {
+  font-size: 1.2rem;
+  color: #888;
+  cursor: pointer;
+}
+
+.profile-card .edit-icon:hover {
+  color: #555;
+}
+
+.options-icon {
+  font-size: 1.25rem;
+  color: #888;
+}
+
+.options-icon:hover {
+  color: #555;
+}
+
+/* Dropdown-menu dentro del perfil */
+.dropdown-menu {
+  padding: 0.5rem 0;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 2000;
+}
+.modal-content {
+  background: #fff;
+  border-radius: .25rem;
+  box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+}

@@ -1,0 +1,69 @@
+<!-- filtro -->
+<div class="filter">
+    <label for="medico">Selecciona un médico:</label>
+    <select id="medico"
+            [(ngModel)]="selectedMedico"
+            (ngModelChange)="onMedicoChange(selectedMedico)">
+    <option [ngValue]="null">-- Elegir --</option>
+    <option *ngFor="let m of medicos" [ngValue]="m">
+        {{ m.apellido }} {{ m.nombre }}
+    </option>
+    </select>
+</div>
+
+<!-- CONTENEDOR RESUMEN -->
+<div *ngIf="perfilUsuario && stats" class="summary-wrapper d-flex justify-content-between">
+  <!-- LEFT: datos y estadísticas -->
+  <div class="summary-card">
+    <h4 class="doctor-name">  {{ selectedMedico?.apellido }} {{ selectedMedico?.nombre }}</h4>
+    <p class="especialidades">
+      Especialidades: 
+    </p>
+    <p class="total-encuestas">Total encuestas: <strong>{{ stats.evaluations.length }}</strong></p>
+    <h1 class="avg-rating">{{ stats.avgRating }}</h1>
+  <div class="star-rating">
+    <ng-container *ngFor="let s of stars">
+      <i [ngClass]="{
+        'bi-star-fill':   s === 'full',
+        'bi-star-half':   s === 'half',
+        'bi-star':        s === 'empty'
+      }"></i>
+    </ng-container>
+  </div>
+    
+  </div>
+
+  <!-- RIGHT: foto -->
+ <div class="profile-card">
+  <img
+    *ngIf="perfilUsuario?.foto_perfil"
+    [src]="'data:image/jpeg;base64,' + perfilUsuario.foto_perfil"
+    alt="Foto médico">
+</div>
+</div>
+
+<!-- LISTADO EVALUACIONES -->
+<div *ngIf="stats" class="evaluations-container">
+  <div *ngFor="let e of stats.evaluations" class="evaluation-card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+   
+      <div class="star-rating d-flex align-items-center">
+       <h3><strong class="me-2">{{ e.puntuacion }}</strong></h3>
+        <ng-container *ngFor="let s of getStarsForRating(e.puntuacion)">
+          <i class="bi"
+            [ngClass]="{
+              'bi-star-fill': s === 'full',
+              'bi-star-half': s === 'half',
+              'bi-star':      s === 'empty'
+            }">
+          </i>
+        </ng-container>
+      </div>      
+      <h6 class="mb-0">{{ e.especialidad }}</h6>
+    </div>
+    <div class="card-body"> 
+      <p class="comment">{{ e.comentario }}</p>
+      <small class="fecha">{{ e.fecha | date:'dd/MM/yyyy' }}</small>
+    </div>
+  </div>
+</div>

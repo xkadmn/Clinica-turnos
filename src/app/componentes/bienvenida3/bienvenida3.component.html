@@ -1,0 +1,34 @@
+<p class="text-start">PRINCIPAL ADMINISTRADOR</p>
+
+<div class="container mt-4">
+    <h1 class="text-start">Bienvenido, {{ usuarioService.usuarioLogueado.nombre }} {{ usuarioService.usuarioLogueado.apellido }}</h1>
+    <hr>
+    
+    <!-- Navegación entre secciones -->
+    <div class="d-flex justify-content-start mb-3">
+      <button class="btn btn-primary me-2" (click)="mostrarSeccion('medicos')">Aprobar Médicos</button>
+      <button class="btn btn-secondary me-2" (click)="mostrarSeccion('pacientes')">Aprobar Pacientes</button>
+      <button class="btn btn-secondary" (click)="mostrarSeccion('estadisticas')">Estadísticas</button>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-8">
+            <!-- Contenido para cada sección -->
+            <ng-container *ngIf="seccionActual === 'medicos'">
+                <app-aprobarmedicos></app-aprobarmedicos>
+            </ng-container>
+
+            <ng-container *ngIf="seccionActual === 'pacientes'">
+                <!--  <app-aprobarpacientes></app-aprobarpacientes>-->
+            </ng-container>
+
+            <ng-container *ngIf="seccionActual === 'estadisticas'">
+                <app-estadisticas-admin></app-estadisticas-admin>
+            </ng-container> 
+        </div>
+        <div class="col-md-8">
+            <!-- Espacio -->
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,39 @@
+:host {
+  display: block;
+  width: 90%;
+  max-width: 1200px;
+  margin: 2rem auto;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+/* Botones estándar pastel */
+.btn-primary, .btn-secondary {
+  --bs-btn-padding-y: .5rem;
+  --bs-btn-padding-x: 1rem;
+  border-radius: .5rem;
+  font-weight: 600;
+  text-transform: none;
+}
+
+/* Activo / Primario */
+.btn-primary {
+  background-color: #a8dadc;
+  border-color: #a8dadc;
+  color: #1d3557;
+}
+.btn-primary:hover {
+  filter: brightness(1.1);
+}
+
+/* (Aquí no hay secundarios pero quedan listos si los necesitas) */
+.btn-secondary {
+  background-color: #f1faee;
+  border-color: #f1faee;
+  color: #457b9d;
+}

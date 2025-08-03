@@ -1,0 +1,165 @@
+<ng-template #loading>
+  <div class="p-3 text-center">Cargando perfil…</div>
+</ng-template>
+
+<!-- Sólo un wrapper *ngIf: -->
+<div *ngIf="usuario && perfil; else loading" class="profile-card p-3">
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="mb-0">{{ usuario.nombre }} {{ usuario.apellido }}</h5>
+    <i class="bi bi-pencil-square edit-icon"
+       title="Editar perfil"
+       (click)="editarPerfil($event)"></i>
+  </div>
+
+  <div class="text-center mb-3">
+ <img
+  [src]="perfil.foto_perfil 
+          ? 'data:image/jpeg;base64,' + (perfil.foto_perfil | bufferToBase64)
+          : '../assets/default-avatar.jpg'"
+  class="rounded-circle"
+  alt="Foto de perfil"
+  style="width: 100px; height: 100px;"
+  
+/>
+  </div>
+  <div class="text-center mb-3" *ngIf="isEditing">
+  <input type="file" accept="image/*" (change)="onFileSelected($event)" />
+  </div>
+
+  <!-- Datos -->
+  <ul class="list-unstyled mb-3">
+    <li><strong>Edad:</strong> {{ edad }} años</li>
+    <li><strong>Email:</strong> {{ perfil.mail || '—' }}</li>
+
+    <li>
+      <strong>Tel 1:</strong>
+      <ng-container *ngIf="!isEditing">{{ perfil.telefono1 }}</ng-container>
+      <input *ngIf="isEditing"
+             [(ngModel)]="perfil.telefono1"
+             class="form-control form-control-sm d-inline-block w-auto" />
+    </li>
+    <li>
+      <strong>Tel 2:</strong>
+      <ng-container *ngIf="!isEditing">{{ perfil.telefono2 }}</ng-container>
+      <input *ngIf="isEditing"
+             [(ngModel)]="perfil.telefono2"
+             class="form-control form-control-sm d-inline-block w-auto" />
+    </li>
+    <li><strong>Dirección:</strong>
+      {{ perfil.direccion }}, {{ perfil.localidad }}
+    </li>
+    <li><strong>Fecha Nac.:</strong> {{ usuario.fecnac | date:'dd/MM/yyyy' }}</li>
+    <li><strong>DNI:</strong> {{ perfil.documento_id }}</li>
+    <li><strong>Legajo:</strong> {{ perfil.legajo_id }}</li>
+    <li><strong>Obra Social:</strong> {{ perfil.obraSocial || 'No asignada' }}</li>
+  </ul>
+
+  <!-- Botón Guardar -->
+  <div class="d-flex justify-content-between align-items-center">
+    <button *ngIf="isEditing"
+            class="btn btn-success btn-sm"
+            (click)="guardarCambios($event)">
+      Guardar
+    </button>
+
+    <!-- Menú de Opciones -->
+    <div class="dropdown">
+      <button class="btn btn-link p-0" (click)="toggleOpciones($event)"
+              title="Más opciones">
+        <i class="bi bi-three-dots-vertical options-icon"></i>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end"
+    [ngClass]="{ show: mostrarOpciones }">
+  <!-- Antes: [routerLink]="['/obra-social']" -->
+  <li>
+    <a class="dropdown-item"
+       (click)="abrirModal('obraSocial', $event)">
+      Obra Social
+    </a>
+  </li>
+  <li *ngIf="isTipoUsuario2()">
+    <a class="dropdown-item"
+       (click)="abrirModal('fichaMedica', $event)">
+      Ver Ficha Médica
+    </a>
+  </li>
+  <li>
+    <a class="dropdown-item"
+       (click)="abrirModal('cambiarContrasena', $event)">
+      Cambiar Contraseña
+    </a>
+  </li>
+</ul>
+    </div>
+  </div>
+
+  <!-- Mensaje éxito -->
+  <div *ngIf="mensajeExito" class="alert alert-success mt-2">
+    {{ mensajeExito }}
+  </div>
+</div>
+
+<!-- Modal-->
+<div *ngIf="modalTipo"
+     class="modal-backdrop d-flex align-items-center justify-content-center">
+  <div class="modal-content p-3" style="max-width: 400px; width:100%;">
+    <div class="modal-header">
+      <h5 class="modal-title">
+        {{ modalTipo === 'obraSocial' ? 'Asignar Obra Social'
+         : modalTipo === 'fichaMedica'   ? 'Ficha Médica'
+         : 'Cambiar Contraseña' }}
+      </h5>
+      <button type="button" class="btn-close" (click)="cerrarModal()"></button>
+    </div>
+    <div class="modal-body">
+      <ng-container [ngSwitch]="modalTipo">
+        <!-- Obra Social -->
+        <form *ngSwitchCase="'obraSocial'">
+          <div class="mb-3">
+            <label class="form-label">Nombre Obra Social</label>
+            <input type="text"
+                   class="form-control"
+                   [(ngModel)]="perfil!.obraSocial"
+                   name="obraSocial">
+          </div>
+          <button type="button"
+                  class="btn btn-primary"
+                  (click)="guardarObraSocial()">
+            Guardar
+          </button>
+        </form>
+        <!-- Ficha Médica -->
+        <div *ngSwitchCase="'fichaMedica'">
+          <p><strong>Nombre:</strong> {{ usuario?.nombre }}</p>
+          <p><strong>Apellido:</strong> {{ usuario?.apellido }}</p>
+        </div>
+        <!-- Cambiar Contraseña -->
+        <form *ngSwitchCase="'cambiarContrasena'">
+          <div class="mb-3">
+            <label class="form-label">Contraseña Actual</label>
+            <input type="password"
+                   class="form-control"
+                   [(ngModel)]="contrasenaActual"
+                   name="contrasenaActual">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Nueva Contraseña</label>
+            <input type="password"
+                   class="form-control"
+                   [(ngModel)]="nuevaContrasena"
+                   name="nuevaContrasena">
+          </div>
+          <div *ngIf="mensajeError" class="text-danger mb-2">
+            {{ mensajeError }}
+          </div>
+          <button type="button"
+                  class="btn btn-primary"
+                  (click)="guardarContrasena()">
+            Cambiar
+          </button>
+        </form>
+      </ng-container>
+    </div>
+  </div>
+</div>

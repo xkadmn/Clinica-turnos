@@ -1,0 +1,93 @@
+
+<div class="wrapper" [class.shifted]="showLogin">
+
+<section id="intro" class="d-flex flex-column justify-content-center align-items-center text-center text-light py-5">
+
+  <div class="intro-overlay"></div> <!-- 🔹 Overlay blur + reflejo -->
+
+  <!-- ÍCONOS ANIMADOS -->
+  <div class="intro-animation mb-4 position-relative">
+    <div class="icons-container">
+      <i class="bi bi-heart-pulse-fill animate__animated animate__bounceIn fs-1 mx-3"></i>
+      <i class="bi bi-hospital animate__animated animate__bounceIn animate__delay-1s fs-1 mx-3"></i>
+      <i class="bi bi-calendar-check animate__animated animate__bounceIn animate__delay-2s fs-1 mx-3"></i>
+    </div>
+  </div>
+
+  <!-- TEXTO DE BIENVENIDA -->
+  <div class="container px-3 position-relative">
+    <h1 class="fw-light display-5 animate__animated animate__fadeInDown animate__delay-2s">
+      Bienvenido a Clínica XYZ
+    </h1>
+    <p class="fw-light lead animate__animated animate__fadeInUp animate__delay-3s">
+      Gestión de turnos médico-paciente.<br>
+      <strong>Angular</strong> + <strong>Bootstrap</strong> + <strong>Animate.css</strong><br>
+      API REST en <strong>Express.js</strong>.
+    </p>
+  </div>
+
+  <!-- FLECHA HACIA ABAJO -->
+  <i class="bi bi-caret-down-fill animate__animated animate__bounce animate__infinite fs-1 mt-4 animate__delay-4s position-relative"></i>
+
+</section>
+
+ 
+  <section id="login">
+    <div class="container mt-5">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="card logincard">
+            <div class="card-body">
+              <form><br> <br>
+                <div class="form-text">
+                  <a type="text-strong" >Inicia Sesión</a>
+                </div> <br> <br>
+                <div class="form-group">
+                  <input type="text" [(ngModel)]="usuario.usuario" (input)="onInputChange()" class="form-control logininput" id="username" name="username" required placeholder="Usuario">
+                </div> <br> <br>
+                <div class="form-group">
+                  <input type="password" [(ngModel)]="usuario.pass" (input)="onInputChange()" class="form-control logininput" id="password" name="password" required placeholder="Contraseña">
+                </div>
+                <div *ngIf="loginError" class="error-message">
+                  Usuario o contraseña incorrectos. Inténtalo nuevamente.
+                </div>
+                
+                <div id="passwordHelpBlock" class="form-text">
+                  Tu contraseña debe tener entre 8 y 20 caracteres, contener letras y números, y no debe contener espacios, caracteres especiales ni emoji.
+                </div>
+                <br> <br>
+                <div class="text-center">
+                <input type="button" (click)="login()" value="Ingresar" class="btn reflejo-boton">
+                            <span class="ms-2 text-warning">
+                  <i
+                    class="bi bi-exclamation-circle-fill 
+                          animate__animated animate__pulse animate__infinite"
+                    style="font-size:1.3rem;"
+                    title="Usuarios:
+                Admin: admin1 / 123Admin123.
+                Paciente: Pac1 / 123Admin123.
+                Médico: Med1 / 123Admin123.">
+                  </i>
+                </span>
+              </div>
+              <br> <br>
+              <div class="form-check mt-2">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="mantener" 
+                    [(ngModel)]="mantenerLogueado"
+                  />
+                  Mantener sesión iniciada
+                </label>
+              </div>
+            </form>
+              <a type="text-strong" [routerLink]="'/principal/registro'">¿No tienes cuenta? ¡Registrate aquí!</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+
+</div>

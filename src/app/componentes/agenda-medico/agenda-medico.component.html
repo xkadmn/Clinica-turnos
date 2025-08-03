@@ -1,0 +1,112 @@
+<button class="btn" (click)="volver()" style="background: none; border: none; padding: 0;">
+  <i class="bi bi-arrow-left-circle" style="font-size: 36px; font-weight: bold;"></i> <!-- Icono de flecha hacia la izquierda -->
+</button>
+<h1>Agenda Médica</h1>
+<div class="d-flex justify-content-center align-items-center my-3">
+  <button class="btn btn-outline-primary me-2" (click)="semanaAnterior()">
+      <i class="bi bi-arrow-left"></i> <!-- Flecha izquierda -->
+  </button>
+  <span class="mx-2">Semana {{ fechaInicioSemana | date:'dd-MM-yyyy' }} - {{ fechaFinSemana | date:'dd-MM-yyyy' }}</span> <!-- Semana filtrada -->
+  <button class="btn btn-outline-primary ms-2" (click)="semanaSiguiente()">
+      <i class="bi bi-arrow-right"></i> <!-- Flecha derecha -->
+  </button>
+</div>
+<div class="container">
+ <div *ngIf="mostrarModalExito" class="overlay">
+  <div class="alert alert-success modal-exito">
+    {{ mensajeExito }}
+  </div>
+</div>
+ 
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th *ngFor="let dia of diasSemana; let i = index">
+          <span class="mx-2" style="font-family: 'Roboto', sans-serif; font-size: 12px; color: #555;">{{ dia }}<br>{{ fechaFormato(fechaInicioSemana, i) | date:'dd-MM-yyyy' }}</span> 
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td *ngFor="let dia of diasSemana">
+          <div *ngFor="let hora of horasPorDia[dia]">
+            <button class="btn turno" 
+            [ngClass]="{
+              'disponible': isTurnoDisponible(hora, dia),
+              'no-disponible': !isTurnoDisponible(hora, dia),
+              'seleccionado': turnoSeleccionado && turnoSeleccionado.hora === hora && turnoSeleccionado.fecha.getDay() === diasSemana.indexOf(dia)
+            }"
+            (click)="(idTurno = getTurnoId(dia, hora)) !== undefined ? abrirTurno(idTurno, dia, hora) : null">
+            {{ hora }}
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+<!-- MODAL DE CONFIRMACIÓN DE TURNO -->
+<div *ngIf="isModalVisible"
+     class="modal fade show"
+     tabindex="-1"
+     aria-modal="true"
+     role="dialog"
+     style="display: block; background: rgba(0,0,0,0.4);">
+  <div class="modal-dialog modal-dialog-centered modal-md">
+    <div class="modal-content rounded-4 shadow-lg">
+      <div class="modal-header border-0">
+        <h5 class="modal-title fw-bold">Confirmar turno</h5>
+        <button type="button" class="btn-close" aria-label="Cerrar" (click)="isModalVisible = false"></button>
+      </div>
+      <div class="modal-body">
+        <p class="mb-3">
+          <strong>
+          {{ turnoSeleccionado?.fecha | date:'dd/MM/yyyy' }}
+          – {{ turnoSeleccionado?.hora }}
+          </strong>
+        </p>
+        <p class="mb-0">
+          <strong>Profesional:</strong> {{ medicoNombre }} {{ medicoApellido }}
+        </p>
+      </div>
+      <div class="modal-footer border-0 justify-content-center">
+        <button type="button"
+                class="btn btn-success px-4 py-2"
+                (click)="aceptarTurno()">
+          Aceptar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<style>
+  .disponible {
+    background-color: rgb(79, 167, 79);
+    color: white;
+  }
+  .no-disponible {
+    background-color: rgb(181, 83, 83);
+    color: white;
+  }
+    .turno {
+    padding: 5px;
+    margin: 2px 0;
+    border-radius: 5px; /* Bordes redondeados */
+  }
+  .disponible:hover {
+    background-color:  rgb(174, 236, 174);/* Color al pasar el mouse */
+  }
+  .no-disponible:hover {
+    background-color:  rgb(236, 173, 173);/* Color al pasar el mouse */
+  }
+
+  .aceptarbtn{
+    background-color: rgb(79, 167, 79);
+    color: white;
+  }
+  .aceptarbtn:hover {
+    background-color:  rgb(174, 236, 174);/* Color al pasar el mouse */
+  }
+
+  
+</style>

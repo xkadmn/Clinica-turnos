@@ -1,0 +1,134 @@
+:host {
+  display: block;
+  width: 90%;
+  max-width: 1200px;
+  margin: 2rem auto;
+
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+/* Contenedor y filas */
+.container, .row {
+  width: 100% !important;
+  margin: 0;
+  padding: 0;
+}
+
+/* Botones de navegación (tabs) unificados */
+.btn-primary, .btn-secondary {
+  --bs-btn-padding-y: .5rem;
+  --bs-btn-padding-x: 1rem;
+  border-radius: .5rem;
+  font-weight: 600;
+  text-transform: none;
+}
+
+/* Activo: azul pastel | Inactivo: gris pastel */
+.btn-primary {
+  background-color: #a8dadc;
+  border-color: #a8dadc;
+  color: #1d3557;
+}
+.btn-secondary {
+  background-color: #f1faee;
+  border-color: #f1faee;
+  color: #457b9d;
+}
+.btn-primary:hover, .btn-secondary:hover {
+  filter: brightness(1.1);
+}
+
+/* Tabla interna de filtros en sección Médicos */
+app-aprobarmedicos .form-group label {
+  color: #264653;
+  font-weight: 500;
+}
+app-aprobarmedicos .form-control {
+  background-color: #f7fcfb;
+  border: 1px solid #d3e4dd;
+  border-radius: .5rem;
+  padding: .4rem .75rem;
+  color: #264653;
+}
+
+/* Tabla */
+table.table {
+  margin-top: 1rem;
+  font-size: .95rem;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+.table thead th {
+  background-color: #e9f5f2;
+  color: #264653;
+  border-bottom: 2px solid #d3e4dd;
+}
+.table tbody tr:nth-child(odd) {
+  background-color: #f7fcfb;
+}
+.table tbody tr:hover {
+  background-color: #f0f8f7;
+}
+
+/* Botones de acciones pastel en lista de Médicos */
+app-aprobarmedicos button.btn-sm {
+  border-radius: .4rem;
+  font-size: .8rem;
+  font-weight: 500;
+}
+
+/* Desaprobado: rojo suave | Aprobado: verde suave */
+app-aprobarmedicos .btn-danger {
+  background-color: #ff6b6b;
+  border-color: #ff6b6b;
+}
+app-aprobarmedicos .btn-success {
+  background-color: #6bff95;
+  border-color: #6bff95;
+  color: #1d3557;
+}
+
+/* Botones de Ficha y Perfil en tonos pastel distintos */
+app-aprobarmedicos .btn-success.btn-sm {
+  background-color: #bde0fe;
+  border-color: #bde0fe;
+  color: #1d3557;
+}
+app-aprobarmedicos .btn-info.btn-sm {
+  background-color: #ffc8dd;
+  border-color: #ffc8dd;
+  color: #1d3557;
+}
+
+/* Alertas informativas pastel */
+.alert-info {
+  background-color: #e0f7fa;
+  color: #006064;
+  border: 1px solid #b2ebf2;
+  border-radius: .5rem;
+}
+
+.table-modern {
+  width: 100%;
+  margin-top: 1rem;
+  font-size: .95rem;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+.table-modern thead th {
+  background-color: #e9f5f2;
+  color: #264653;
+  border-bottom: 2px solid #d3e4dd;
+}
+.table-modern tbody tr:nth-child(odd) {
+  background-color: #f7fcfb;
+}
+.table-modern tbody tr:hover {
+  background-color: #f0f8f7;
+}

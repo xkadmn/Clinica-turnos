@@ -1,0 +1,277 @@
+<p class="text-start">PRINCIPAL MEDICO</p>
+<div class="container mt-4">
+
+    <div *ngIf="bloqueadoPorAprobacion" 
+        class="approval-overlay d-flex flex-column align-items-center justify-content-center">
+
+        <!-- Mensaje arriba -->
+        <div class="approval-message mb-4 text-center">
+            <strong>Tu cuenta está pendiente de aprobación.</strong><br>
+            Ante cualquier consulta, comunicate con el administrador.
+        </div>
+
+        <!-- Spinner debajo -->
+        <div class="mt-2">
+            <app-spinner size="large" class="spinner-highlight"></app-spinner>
+        </div>
+    </div>
+    
+    <h1 class="text-start">Bienvenido, Dr. {{ usuarioService.usuarioLogueado.nombre }} {{ usuarioService.usuarioLogueado.apellido }}</h1>
+    <hr> <!-- Barra separatoria -->
+    <div class="d-flex mt-8">
+        <button class="btn btn-secondary me-2" (click)="mostrarSeccion('agenda')">Ver Agenda</button>
+        <button class="btn btn-secondary me-2" (click)="mostrarSeccion('habilitar-turnos')">Habilitar Turnos por Día</button>
+        <button class="btn btn-secondary me-2" (click)="mostrarSeccion('habilitar-turnos-mes')">Habilitar Turnos por Mes</button>
+        <button class="btn btn-secondary me-2" (click)="mostrarSeccion('estadisticas')">Estadísticas</button>
+    </div>
+
+    <!-- Sección de Ver Agenda y Lista de Turnos -->
+    <div *ngIf="seccionActual === 'agenda'" class="agenda-container mt-4">
+        <!-- Navegación entre subsecciones -->
+        <h2 class="text-start">Agenda</h2>
+        <div class="d-flex justify-content-start my-3">
+            <button class="btn btn-outline-primary" (click)="mostrarSubseccion('calendario')">Calendario</button>
+            <button class="btn btn-outline-primary ms-2" (click)="mostrarSubseccion('listaTurnos')">Lista de Turnos</button>
+        </div>
+        <!-- Navegación de semanas centrada -->
+        <div class="d-flex justify-content-center align-items-center my-3">
+            <button class="btn btn-outline-primary me-2" (click)="semanaAnterior()">
+                <i class="bi bi-arrow-left"></i> <!-- Flecha izquierda -->
+            </button>
+            <span class="mx-2">Semana {{ fechaInicioSemana | date:'dd-MM-yyyy' }} - {{ fechaFinSemana | date:'dd-MM-yyyy' }}</span> <!-- Semana filtrada -->
+            <button class="btn btn-outline-primary ms-2" (click)="semanaSiguiente()">
+                <i class="bi bi-arrow-right"></i> <!-- Flecha derecha -->
+            </button>
+        </div>
+
+        <!-- Sección de Especialidades del Médico -->
+        <div class="mt-4">
+            <h2 class="text-start mb-0" style="font-size: 14px; color: #555;">Especialidades del Médico</h2>
+            <ul class="list-group">
+                <li *ngFor="let especialidad of especialidades" class="list-group-item " style="font-size: 14px; color: #555;">
+                    {{ especialidad.nombre }} (ID: {{ especialidad.id }})
+                </li>
+            </ul>
+        </div>
+
+        <!-- Sub-sección Lista de Turnos -->
+        <div *ngIf="subseccionActual==='listaTurnos'" class="mt-4">
+            <h2>Lista de Turnos</h2>
+            <div class="listado-turnos-wrapper table-responsive">
+            <table class="table table-bordered table-modern">
+                <thead class="table-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Especialidad</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Disponible</th>
+                    <th>Paciente</th>
+                    <th>Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let turno of turnos">
+                    <td [ngClass]="getRowCls(turno)">{{ turno.id }}</td>
+                    <td [ngClass]="getRowCls(turno)">{{ especialidadesMap[turno.especialidadId] || '–' }}</td>
+                    <td [ngClass]="getRowCls(turno)">{{ turno.fecha | date:'dd-MM-yyyy':'UTC' }}</td>
+                    <td [ngClass]="getRowCls(turno)">{{ turno.hora }}</td>
+                    <td [ngClass]="getRowCls(turno)">
+                    {{
+                        turno.disponible === 1 ? 'disponible' :
+                        turno.disponible === 0 ? 'no disponible' :
+                        'cancelado'
+                    }}
+                    </td>
+                    <td [ngClass]="getRowCls(turno)">
+                    {{ turno.pacienteId ? turno.pacienteId : '-' }}
+                    </td>
+                         <!-- Cancelar turno -->
+                    <td>
+                        <button 
+                            class="btn btn-link"
+                            [ngClass]="{'text-muted': turno.disponible===3}"
+                            (click)="cancelarTurno(turno.id!)"
+                            [disabled]="turno.disponible===3">
+                            <i class="bi bi-x-circle"></i>
+                        </button>
+                        <!-- Eliminar turno -->
+                        <button 
+                            class="btn btn-link"
+                            [ngClass]="{'text-muted': turno.disponible!==3}"
+                            (click)="eliminarTurno(turno.id!)"
+                            [disabled]="turno.disponible!==3">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            </div>
+            </div>
+
+        
+        <div *ngIf="subseccionActual==='calendario'" class="mt-4">
+        <table class="table table-modern text-center">
+            <thead>
+            <tr>
+                <th *ngFor="let dia of diasSemana">{{ dia }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td *ngFor="let dia of diasSemana" style="vertical-align:top; min-width:100px;">
+                <ng-container *ngFor="let t of turnosPorDia[dia]">
+                    <div class="mb-1 p-2"
+                        [ngClass]="getCls(t)">
+                    {{ t.hora }}
+                    </div>
+                </ng-container>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        </div>
+
+
+    </div>
+
+    <!-- Sección de Habilitar Turnos -->
+    <div *ngIf="seccionActual === 'habilitar-turnos'" class="mt-2">
+        <h2 class="text-start">Habilitar Turnos por día</h2>
+        <form (ngSubmit)="habilitarTurno()" #turnoForm="ngForm">
+            <div class="form-group">
+                <label for="especialidad">Especialidad</label>
+                <select id="especialidad" class="form-control" [(ngModel)]="turno.especialidadId" name="especialidad" required>
+                    <option *ngFor="let especialidad of especialidades" [value]="especialidad.id">{{ especialidad.nombre }}</option>
+                </select>
+            </div>
+            <div class="form-group" *ngIf="turno.especialidadId">
+                <label for="fecha">Fecha</label>
+                <input type="date" id="fecha" class="form-control" [(ngModel)]="turno.fecha" name="fecha" required>
+            </div>
+            <div class="form-group" *ngIf="turno.especialidadId && turno.fecha">
+                <label>Horarios Disponibles</label><br>
+                <div class="row">
+                    <div class="col-4" *ngFor="let hora of horasDisponibles">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" [value]="hora" (change)="seleccionarHorarioMes(hora)" [checked]="horariosSeleccionados.includes(hora)">
+                            <label class="form-check-label">
+                                {{ hora }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary" [disabled]="!turnoForm.form.valid || horariosSeleccionados.length === 0">Habilitar Turnos</button>
+        </form>
+    </div>
+
+    <!-- Sección de Habilitar Turnos por mes -->
+    <div *ngIf="seccionActual === 'habilitar-turnos-mes'" class="mt-2">
+        <h2 class="text-start">Habilitar Turnos por mes</h2>
+        <form (ngSubmit)="habilitarTurnoMes()" #turnoMesForm="ngForm">
+            <div class="form-group">
+                <label for="especialidad">Especialidad</label>
+                <select id="especialidad" class="form-control" [(ngModel)]="turnoMes.especialidadId" name="especialidad" required>
+                    <option *ngFor="let especialidad of especialidades" [value]="especialidad.id">{{ especialidad.nombre }}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="mes">Mes</label>
+                <input type="month" id="mes" class="form-control" [(ngModel)]="turnoMes.mes" name="mes" required>
+            </div>
+            <div class="form-group">
+                <label>Días de la Semana</label><br>
+                <div *ngFor="let dia of diasSemana">
+                    <label>
+                        <input type="checkbox" [value]="dia" (change)="seleccionarDia(dia)" [checked]="diasSeleccionados.includes(dia)">
+                        {{ dia }}
+                    </label>
+                </div>
+            </div>
+            <div class="form-group" *ngIf="turnoMes.especialidadId && diasSeleccionados.length > 0" >
+                <label>Horarios Disponibles</label><br>
+                <div class="row">
+                    <div class="col-4" *ngFor="let hora of horasDisponibles">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" [value]="hora" (change)="seleccionarHorarioMes(hora)" [checked]="horariosSeleccionados.includes(hora)">
+                            <label class="form-check-label">
+                                {{ hora }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary" [disabled]="!turnoMesForm.form.valid || horariosSeleccionados.length === 0">Habilitar Turnos</button>
+        </form>
+    </div>
+    
+
+    <div *ngIf="seccionActual === 'estadisticas'" class="mt-4 stats-section position-relative">
+ <!-- Spinner mientras carga -->
+  <div *ngIf="loadingStats" class="stats-spinner-overlay d-flex align-items-center justify-content-center">
+    <app-spinner size="large"></app-spinner>
+  </div>
+    
+
+    <!-- Sección de Estadísticas -->
+  <div *ngIf="!loadingStats && stats && perfilUsuario" class="stats-content">
+    <!-- CONTENEDOR RESUMEN -->    
+     
+    <div class="summary-wrapper d-flex justify-content-between">
+        <!-- LEFT: datos y estadísticas -->
+        <div class="summary-card">
+        <h4 class="doctor-name">
+            Dr. {{ usuarioService.usuarioLogueado.apellido }} {{ usuarioService.usuarioLogueado.nombre }}
+        </h4>
+        <p class="total-encuestas">
+            Total encuestas: <strong>{{ stats.evaluations.length }}</strong>
+        </p>
+        <h1 class="avg-rating">{{ stats.avgRating }}</h1>
+        <div class="star-rating">
+            <ng-container *ngFor="let s of stars">
+            <i [ngClass]="{
+                'bi-star-fill':   s === 'full',
+                'bi-star-half':   s === 'half',
+                'bi-star':        s === 'empty'
+            }"></i>
+            </ng-container>
+        </div>
+        </div>
+        <!-- RIGHT: foto -->
+        <div class="profile-card">
+        <img
+            *ngIf="perfilUsuario.foto_perfil"
+            [src]="'data:image/jpeg;base64,' + perfilUsuario.foto_perfil"
+            alt="Foto perfil médico">
+        </div>
+    </div>
+
+    <!-- LISTADO DE COMENTARIOS -->
+    <div class="evaluations-container mt-4">
+        <div *ngFor="let e of stats.evaluations" class="evaluation-card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="star-rating d-flex align-items-center">
+            <h3><strong class="me-2">{{ e.puntuacion }}</strong></h3>
+            <ng-container *ngFor="let s of getStarsForRating(e.puntuacion)">
+                <i class="bi"
+                [ngClass]="{
+                    'bi-star-fill': s === 'full',
+                    'bi-star-half': s === 'half',
+                    'bi-star':      s === 'empty'
+                }"></i>
+            </ng-container>
+            </div>
+            <h6 class="mb-0">{{ e.especialidad }}</h6>
+        </div>
+        <div class="card-body">
+            <p class="comment">{{ e.comentario }}</p>
+            <small class="fecha">{{ e.fecha | date:'dd/MM/yyyy' }}</small>
+        </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    
+</div>

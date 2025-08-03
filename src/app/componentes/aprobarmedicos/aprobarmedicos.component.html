@@ -1,0 +1,60 @@
+<div class="container">
+  <div class="form-group">
+    <label for="filtroEstado">Filtrar por estado:</label>
+    <select [(ngModel)]="filtroEstado" (ngModelChange)="cambiarFiltro($event)" class="form-control" id="filtroEstado">
+      <option value="todos">Todos</option>
+      <option value="noAprobados">No Aprobados</option>
+      <option value="aprobados">Aprobados</option>
+    </select>
+  </div>
+    <!-- Modal de mensaje -->
+    <div *ngIf="mensajeVisible" class="alert alert-info" role="alert">
+      {{ mensaje }}
+    </div>
+
+  <table class="table table-bordered table-hover">
+    <thead class="thead-light">
+      <tr>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let usuario of medicosFiltrados" class="medico-item">
+        <td>{{ usuario.nombre }}</td>
+        <td>{{ usuario.apellido }}</td>
+        <td>{{ usuario.aprobado | aprobado }}
+          <button
+          class="btn btn-sm"
+          [ngClass]="{
+            'btn-danger': !usuario.aprobado,
+            'btn-success': usuario.aprobado
+          }"
+          (mouseover)="hoverButton(true)"
+          (mouseout)="hoverButton(false)"
+          (click)="cambiarEstadoAprobacion(usuario)">
+          {{ usuario.aprobado ? 'Deshabilitar' : 'No Aprobado' }}
+        </button>
+        </td>
+        <td>
+          <button
+            class="btn btn-success btn-sm me-1"
+            title="Ficha Médico"
+            (click)="verFicha(usuario.id)">
+            <i class="bi bi-file-medical"></i>
+          </button>
+          <button
+            class="btn btn-info btn-sm"
+            title="Ver Perfil"
+            (click)="verPerfil(usuario.id)">
+            <i class="bi bi-person-circle"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+
+</div>

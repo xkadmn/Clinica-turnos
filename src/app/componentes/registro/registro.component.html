@@ -1,0 +1,182 @@
+
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="registercard">
+        <div class="card-header text-center">
+          <div class="form-text">
+            <a type="text-strong">Registro</a>
+          </div>
+        </div>
+        <div class="card-body">
+
+          <form>
+            <!-- Campos de registro de usuario -->
+            <div *ngIf="!perfilVisible && !fichaMedicaVisible">
+              <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" class="form-control registerinput" id="nombre" name="nombre" [(ngModel)]="usuario.nombre" required>
+              </div>
+              <div class="form-group">
+                <label for="apellido">Apellido:</label>
+                <input type="text" class="form-control registerinput" id="apellido" name="apellido" [(ngModel)]="usuario.apellido" required>
+              </div>
+              <div class="form-group">
+                <label for="usuario">Usuario:</label>
+                <input type="text" class="form-control registerinput" id="usuario" name="usuario" [(ngModel)]="usuario.usuario" required>
+              </div>
+              <div class="form-group">
+                <label for="fecNac">Fecha de Nacimiento:</label>
+                <input type="date" class="form-control registerinput" id="fecNac" name="fecNac" [(ngModel)]="usuario.fecnac"required>
+              </div>
+              <div class="form-group">
+                <label for="mail">Email:</label>
+                <input type="email" class="form-control registerinput" id="mail" name="mail" [(ngModel)]="usuario.mail" required>
+              </div>
+              <div class="form-group">
+                <label for="tipo">Tipo de Usuario:</label>
+                <select
+                  class="form-control registerinput"
+                  id="tipo"
+                  name="tipo"
+                  [(ngModel)]="usuario.tipo"
+                  (change)="onTipoChange()"
+                  required
+                >
+                  <!-- Placeholder vacío -->
+                  <option value="" disabled selected>Selecciona un tipo de usuario</option>
+                  <option value="1">Paciente</option>s
+                  <option value="2">Médico</option>
+                </select>
+              </div>
+              <div *ngIf="!perfilVisible && !fichaMedicaVisible">
+                <div class="form-group">
+                  <label for="pass">Contraseña:</label>
+                  <input type="password" class="form-control registerinput" id="pass" name="pass" [(ngModel)]="usuario.pass" required>
+                </div>
+                <div class="form-group">
+                  <label for="confirmPass">Repetir contraseña:</label>
+                  <input type="password" class="form-control registerinput" id="confirmPass" name="confirmPass" [(ngModel)]="pass2" required>
+                </div>
+                <div class="row mt-3">
+                  <input type="button" class="register-button btn btn-block" *ngIf="usuario.pass && pass2 && usuario.pass === pass2" (click)="registrarUsuario()" value="REGISTRAR">
+                </div>
+              </div>
+            </div>
+
+            <!-- Modal de Bootstrap -->
+            <div class="modal fade" id="perfilModal" tabindex="-1" aria-labelledby="perfilModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="perfilModalLabel">Completa tu perfil</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    Por favor, completa tus datos de perfil a continuación.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+
+               <form>
+
+            <!-- Sección del perfil -->
+            <div *ngIf="perfilVisible">
+              <h4>Datos del Perfil</h4>
+              <button type="button" class="btn btn-secondary mb-3" (click)="prevSection('fichaMedica')">← Volver</button>
+              <div class="form-group">
+                <label for="telefono1">Teléfono 1:</label>
+                <input type="text" class="form-control" id="telefono1" name="telefono1" [(ngModel)]="perfil.telefono1" required>
+              </div>
+              <div class="form-group">
+                <label for="telefono2">Teléfono 2:</label>
+                <input type="text" class="form-control" id="telefono2" name="telefono2" [(ngModel)]="perfil.telefono2">
+              </div>
+              <div class="form-group">
+                <label for="direccion">Dirección:</label>
+                <input type="text" class="form-control" id="direccion" name="direccion" [(ngModel)]="perfil.direccion" required>
+              </div>
+                <div class="form-group">
+              <label for="localidad">Localidad:</label>
+              <select
+                class="form-control"
+                id="localidad"
+                name="localidad"
+                [(ngModel)]="perfil.localidad"
+                required
+              >
+                <option value="" disabled selected>Selecciona una localidad</option>
+                <option
+                  *ngFor="let loc of listaLocalidades"
+                  [value]="loc.nombre"
+                >
+                  {{ loc.nombre }} ({{ loc.provincia }})
+                </option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="nacionalidad">Nacionalidad:</label>
+              <select
+                class="form-control"
+                id="nacionalidad"
+                name="nacionalidad"
+                [(ngModel)]="perfil.nacionalidad"
+                required
+              >
+                <option value="" disabled selected>Selecciona una nacionalidad</option>
+                <option
+                  *ngFor="let nac of listaNacionalidades"
+                  [value]="nac"
+                >
+                  {{ nac }}
+                </option>
+              </select>
+            </div>
+              <div class="form-group">
+                <label for="documento_tipo">Tipo de Documento:</label>
+                <select
+                  id="documento_tipo"
+                  name="documento_tipo"
+                  class="form-control"
+                  [(ngModel)]="perfil.documento_tipo"
+                  required
+                >
+                  <option value="" disabled>Selecciona un tipo</option>
+                  <option value="dni">DNI</option>
+                  <option value="cuit">CUIT</option>
+                  <option value="pasaporte">Pasaporte</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="documento_id">Número de Documento:</label>
+                <input
+                  type="text"
+                  id="documento_id"
+                  name="documento_id"
+                  class="form-control"
+                  [(ngModel)]="perfil.documento_id"
+                  required
+                >
+              </div>
+              <div class="form-group">
+                <label for="foto_perfil">Foto de Perfil:</label>
+                <input type="file" class="form-control" id="foto_perfil" (change)="onFileChange($event)">
+              </div>
+             <!-- Botón en la sección de perfil -->
+             <div class="row mt-3">
+              <input type="button" class="register-button btn btn-block" (click)="nextSection()" value="Siguiente">
+            </div>
+            </div>
+
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,9 @@
+<p class="text-start">PRINCIPAL PACIENTE</p>
+<div class="container">
+    <h1 class="text-start">Bienvenido, {{ usuario?.nombre }} {{ usuario.apellido }}</h1>
+    <hr> <!-- Barra separatoria -->
+    <div class="d-flex mt-3">
+        <button (click)="irAPedirTurno()" class="btn btn-primary me-2">Buscar turno médico</button>
+        <button (click)="misturnos()" class="btn btn-primary">Mis turnos</button>
+    </div>
+</div>

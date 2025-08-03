@@ -1,0 +1,124 @@
+<button class="btn" (click)="volver()" style="background: none; border: none; padding: 0;">
+    <i class="bi bi-arrow-left-circle" style="font-size: 36px; font-weight: bold;"></i> <!-- Icono de flecha hacia la izquierda -->
+</button>
+
+<div class="turnos-wrapper position-relative">
+  <!-- OVERLAY de CARGA -->
+  <div *ngIf="isLoading"
+       class="overlay animate__animated animate__fadeIn">
+    <div class="spinner-border text-light" role="status">
+      <span class="visually-hidden">Cargando…</span>
+    </div>
+  </div>
+   <!-- CONTENIDO: se desenfoca mientras isLoading -->
+  <div
+      *ngIf="!isLoading"
+      class="container mt-5 animate__animated animate__fadeIn"
+      [ngClass]="{'blur-background': isLoading}">
+    <h2 class="text-center mb-2" style="font-family: 'Roboto', sans-serif; font-size: 20px; color: #555;">Listado de Turnos</h2>
+    
+    <table class="table table-bordered">
+      <thead class="thead-light" style="font-family: 'Roboto', sans-serif; font-size: 14px; color: #555;">
+        <tr>
+          <th>ID</th>
+          <th>Profesional</th>
+          <th>Especialidad</th>
+          <th>Fecha</th>
+          <th>Hora</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let turno of turnos" style="font-family: 'Roboto', sans-serif; font-size: 12px; color: #555;">
+          <td>{{ turno.id }}</td>
+          <td>{{ turno.medicoNombre }}</td>
+          <td>{{ turno.especialidadNombre }}</td>
+          <td>{{ turno.fecha }}</td> 
+          <td>{{ turno.hora }}</td>
+          <td>{{ obtenerEstado(turno) }}</td>
+          <td>
+            <button
+              class="btn btn-link p-0"
+              [ngClass]="{
+                'text-danger': obtenerEstado(turno) === 'Pendiente',
+                'text-secondary': obtenerEstado(turno) !== 'Pendiente'
+              }"
+              (click)="onCancelarClick(turno)"
+              title="Cancelar turno">
+              <i class="bi bi-x-circle"></i>
+            </button>
+            <button
+            class="btn btn-link p-0 ms-2"
+            [ngClass]="starButtonClass(turno)"
+            [disabled]="obtenerEstado(turno) !== 'Terminado'"
+            (click)="abrirModalPuntuacion(turno)"
+            title="Evaluar atencion">
+            <i class="bi bi-star-fill" style="font-size:1.25rem;"></i>
+          </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+<div *ngIf="mostrarModalPuntuacion" class="overlay">
+  <div class="card p-3" style="max-width: 360px; width:100%; position: relative;">
+    <!-- Botón cerrar -->
+    <button (click)="cerrarModalPuntuacion()"
+            style="position:absolute; top:0.5rem; right:0.5rem; border:none; background:none; font-size:1.2rem;">
+      &times;
+    </button>
+
+    <h5 class="card-title text-center mb-3">Evaluar Atención</h5>
+
+    <!-- Muestra si ya hay puntuación -->
+    <div *ngIf="turnoParaPuntuar?.puntuacion; else nueva">
+      <p class="text-center mb-2"><strong>{{ turnoParaPuntuar?.puntuacion }} / 5</strong>
+      <div class="d-flex justify-content-center mb-3">
+        <ng-container *ngFor="let estrella of [1,2,3,4,5]">
+          <i class="bi bi-star-fill"
+             [ngClass]="estrella <= (turnoParaPuntuar?.puntuacion ?? 0) ? 'text-warning' : 'text-secondary'"
+             style="font-size:1.5rem; margin:0 2px;">
+          </i>
+        </ng-container>
+      </div>
+      <p *ngIf="comentarioGuardado" class="fst-italic text-muted">
+        "{{ comentarioGuardado }}"
+      </p>
+      <div class="text-center">
+        <button class="btn btn-primary" (click)="cerrarModalPuntuacion()">Cerrar</button>
+      </div>
+    </div>
+
+    <!-- Form para nueva puntuación -->
+    <ng-template #nueva>
+      <div class="d-flex justify-content-center mb-3">
+        <ng-container *ngFor="let estrella of [1,2,3,4,5]">
+          <i class="bi"
+             [ngClass]="valorPuntuacion >= estrella ? 'bi-star-fill text-warning' : 'bi-star text-secondary'"
+             (click)="valorPuntuacion = estrella"
+             style="font-size:1.5rem; cursor:pointer; margin:0 2px;">
+          </i>
+        </ng-container>
+      </div>
+
+      <div class="mb-3">
+        <label for="comentario" class="form-label">Comentario (opcional)</label>
+        <textarea id="comentario"
+                  class="form-control"
+                  rows="3"
+                  [(ngModel)]="comentarioNueva"></textarea>
+      </div>
+
+      <div class="text-end">
+        <button class="btn btn-secondary me-2" (click)="cerrarModalPuntuacion()">Cancelar</button>
+        <button class="btn btn-primary"
+                [disabled]="valorPuntuacion===0"
+                (click)="submitPuntuacion()">
+          Enviar
+        </button>
+      </div>
+    </ng-template>
+  </div>
+</div>

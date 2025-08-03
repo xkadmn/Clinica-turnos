@@ -1,0 +1,109 @@
+.navbar {
+  background-color: rgba(255, 255, 255, 0.349);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: fixed;   
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+.navbar:hover {
+  background-color: rgba(255, 255, 255, 0.952);
+}
+
+/* Marca (logo) mantiene su estilo */
+.navbar-brand {
+  font-weight: bold;
+  color: #B76E79;
+}
+.navbar-brand:hover {
+  color: rgb(174, 66, 66);
+}
+
+/* Botones heredan el look pastel */
+.nav-item .btn {
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  text-transform: none;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Botón primario pastel */
+.btn-outline-primary {
+  color: #B76E79;
+  border-color:  #B76E79;
+}
+.btn-outline-primary:hover {
+  background-color: #f1faee48;
+  color: #168bd3;
+  border-color: #f1faee;
+}
+
+/* Botón secundario pastel */
+.btn-outline-secondary {
+  color:  #B76E79;
+  border-color: #B76E79;
+}
+.btn-outline-secondary:hover {
+  background-color: #f1faee48;
+  color: #168bd3;
+  border-color: #f1faee;
+}
+
+/* Links dentro de nav (si no usan btn) */
+.nav-item a {
+  background-color: transparent;
+}
+.nav-item a:hover {
+  background-color: rgba(168, 218, 220, 0.2);
+  color: #1d3557;
+}
+
+/* Dropdown sin cambios en íconos */
+.dropdown-menu {
+  background-color: #FFFFFF;
+  border-radius: 5px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+.dropdown-item {
+  color: #2C2C2C;
+}
+.dropdown-item:hover {
+  background-color: #F6F0E6;
+}
+
+/* Iconos */
+.navbar .btn i {
+  font-size: 24px;
+  margin: 0;
+}
+
+/* Contenedor de íconos en navbar */
+.logo-icons .icons-container {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.logo-icons .icons-container i {
+  font-size: 1.8 rem;
+  color: #B76E79;  
+  animation: floatIcon 3s ease-in-out infinite;
+  -webkit-animation: floatIcon 1.5s ease-in-out infinite;
+}
+
+.logo-icons .icons-container i:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+.logo-icons .icons-container i:nth-child(3) {
+  animation-delay: 1s;
+}
+
+/* Animación flotante */
+@keyframes floatIcon {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-4px); }
+  100% { transform: translateY(0); }
+}

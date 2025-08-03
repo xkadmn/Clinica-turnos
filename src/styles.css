@@ -1,0 +1,16 @@
+/* 1. Eliminar márgenes por defecto */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+/* 2. Fondo FULLSCREEN */
+body {
+  background: url("/assets/clinicafondo1.png") no-repeat center center fixed;
+  background-size: cover;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+.body-pp {
+  padding-top: 56px;  /* altura real de tu navbar */
+}

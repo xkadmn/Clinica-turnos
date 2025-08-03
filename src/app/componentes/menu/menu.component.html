@@ -1,0 +1,47 @@
+<nav class="navbar navbar-expand navbar-light">
+  <div class="container-fluid">
+    <a class="navbar-brand d-flex align-items-center logo-icons" [routerLink]="'/principal'">
+      <div class="icons-container">
+        <i class="bi bi-heart-pulse-fill animate__animated animate__bounceIn"></i>
+        <i class="bi bi-hospital animate__animated animate__bounceIn animate__delay-1s"></i>
+        <i class="bi bi-calendar-check animate__animated animate__bounceIn animate__delay-2s"></i>
+      </div>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item" *ngIf="!usuarioservices.estoyLogueado()">
+          <a class="btn btn-outline-primary me-2" [routerLink]="'/principal/registro'">Regístrate</a>
+        </li>
+        <li class="nav-item" *ngIf="!usuarioservices.estoyLogueado()">
+          <a class="btn btn-outline-primary me-2" [routerLink]="'/principal/login'">Inicia Sesión</a>
+        </li>
+
+        <span class="navbar-text d-flex align-items-center" *ngIf="usuarioservices.estoyLogueado()">
+          <div class="me-3">
+            {{ usuarioservices.usuarioLogueado.nombre }} {{ usuarioservices.usuarioLogueado.apellido }}
+          </div>
+          <!-- Dropdown para el perfil -->
+          <div class="dropdown ms-3">
+            <button class="btn btn-outline-secondary dropdown-toggle" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-person-circle" style="font-size: 24px;"></i> <!-- Icono de perfil -->
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+              <li><app-perfil></app-perfil></li>
+            </ul>
+          </div>
+          <!-- Cerrar sesión --> 
+          <div>
+            <button class="btn btn-outline-secondary" (click)="logout()">
+              <i class="bi bi-box-arrow-right" style="font-size: 24px;"></i> <!-- Icono de cerrar sesión -->
+            </button>
+          </div>
+        </span>
+      </ul>
+    </div>
+  </div>
+</nav>
+
