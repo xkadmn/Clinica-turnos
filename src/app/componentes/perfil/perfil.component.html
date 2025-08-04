@@ -70,27 +70,26 @@
         <i class="bi bi-three-dots-vertical options-icon"></i>
       </button>
       <ul class="dropdown-menu dropdown-menu-end"
-    [ngClass]="{ show: mostrarOpciones }">
-  <!-- Antes: [routerLink]="['/obra-social']" -->
-  <li>
-    <a class="dropdown-item"
-       (click)="abrirModal('obraSocial', $event)">
-      Obra Social
-    </a>
-  </li>
-  <li *ngIf="isTipoUsuario2()">
-    <a class="dropdown-item"
-       (click)="abrirModal('fichaMedica', $event)">
-      Ver Ficha Médica
-    </a>
-  </li>
-  <li>
-    <a class="dropdown-item"
-       (click)="abrirModal('cambiarContrasena', $event)">
-      Cambiar Contraseña
-    </a>
-  </li>
-</ul>
+          [ngClass]="{ show: mostrarOpciones }">
+        <li>
+          <a class="dropdown-item"
+            (click)="abrirModal('obraSocial', $event)">
+            Obra Social
+          </a>
+        </li>
+        <li *ngIf="isTipoUsuario2()">
+          <a class="dropdown-item"
+            (click)="abrirModal('fichaMedica', $event)">
+            Ver Ficha Médica
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item"
+            (click)="abrirModal('cambiarContrasena', $event)">
+            Cambiar Contraseña
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 
@@ -103,7 +102,7 @@
 <!-- Modal-->
 <div *ngIf="modalTipo"
      class="modal-backdrop d-flex align-items-center justify-content-center">
-  <div class="modal-content p-3" style="max-width: 400px; width:100%;">
+  <div class="modal-content p-3" style="max-width: 400px; width:100%;" (click)="$event.stopPropagation()">
     <div class="modal-header">
       <h5 class="modal-title">
         {{ modalTipo === 'obraSocial' ? 'Asignar Obra Social'
@@ -153,11 +152,11 @@
           <div *ngIf="mensajeError" class="text-danger mb-2">
             {{ mensajeError }}
           </div>
-          <button type="button"
-                  class="btn btn-primary"
-                  (click)="guardarContrasena()">
-            Cambiar
-          </button>
+        <button type="button"
+        class="btn btn-primary"
+                (click)="guardarContrasena($event)">
+          Cambiar
+        </button>
         </form>
       </ng-container>
     </div>

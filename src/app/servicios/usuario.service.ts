@@ -233,15 +233,18 @@ public getTodosUsuarios(): Observable<User[]> {
 
   
 
-  public cambiarContrasena(userId: number, nuevaContrasena: string): Observable<any> {
-    return this.http.put<any>(
-      `${this.apiurl}/usuarios/${userId}/cambiarContrasena`,
-      { nuevaContrasena }
-    );
-  }
-
+public cambiarContrasena(userId: number, actual: string, nueva: string): Observable<any> {
+  return this.http.put<any>(
+    `${this.apiurl}/usuarios/${userId}/cambiarContrasena`,
+    { actual, nueva }
+  );
+}
   public getMedicosAprobados(): Observable<User[]> {
   return this.http.get<User[]>(`${this.apiurl}/medicos-aprobados`);
   } 
+
+  actualizarObraSocial(id: number, obraSocial: string) {
+  return this.http.put(`${this.apiurl}/perfil/${id}/obra-social`, { obraSocial });
+}
   
 }

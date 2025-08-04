@@ -62,7 +62,12 @@ export class Bienvenida2Component implements OnInit {
   ngOnInit(): void {
     this.usuario = this.usuarioService.getUsuarioLogueado();
     console.log('Usuario:', this.usuario);
-console.log('Aprobado:', this.usuario?.aprobado);
+      if (this.usuario) {
+    // Normalizar aprobado de inmediato
+    this.usuario.aprobado = Number(this.usuario.aprobado) === 1;
+  }
+  
+  console.log('Aprobado:', this.usuario?.aprobado);
     this.obtenerEspecialidadesMedico();
     this.generarHorariosDisponibles();
     this.calcularFechasSemanaActual();
@@ -72,9 +77,6 @@ console.log('Aprobado:', this.usuario?.aprobado);
 
 get bloqueadoPorAprobacion(): boolean {
   return !this.usuario?.aprobado;
-  
-
-  
 }
 
  mostrarSeccion(seccion: string) {

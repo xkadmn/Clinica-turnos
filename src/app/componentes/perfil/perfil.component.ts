@@ -166,49 +166,65 @@ guardarCambios(event: MouseEvent) {
   }
 
   guardarObraSocial() {
-  if (!this.perfil) return;
-  // Llamo al endpoint PUT /perfil/:id (actualiza obraSocial)
-  this.usuarioService
-    .actualizarPerfil({ ...this.perfil, obraSocial: this.perfil.obraSocial! })
-    .subscribe({
-      next: () => {
-        this.mensajeExito = 'Obra social actualizada';
-        this.cerrarModal();
-        this.cargarPerfil();
-        setTimeout(() => this.mensajeExito = null, 2000);
-      },
-      error: () => {
-        this.mensajeError = 'Error al actualizar obra social';
-      }
-    });
-}
+    if (!this.perfil || !this.perfil.obraSocial) return;
 
-// Extiende guardarContrasena para validar la anterior
-guardarContrasena() {
-  if (!this.nuevaContrasena || !this.contrasenaActual) {
-    this.mensajeError = 'Completa ambos campos.';
-    return;
+    this.usuarioService.actualizarObraSocial(this.usuario!.id, this.perfil.obraSocial)
+      .subscribe({
+        next: () => {
+          this.mensajeExito = 'Obra social actualizada';
+          this.cerrarModal();
+          this.cargarPerfil();
+          setTimeout(() => this.mensajeExito = null, 2000);
+        },
+        error: (err) => {
+          console.error('Error al actualizar obra social:', err);
+          this.mensajeError = 'Error al actualizar obra social';
+        }
+      });
   }
-  // 1) Validar la contraseña actual
-  this.usuarioService
-    .cambiarContrasena(this.usuario!.id, this.contrasenaActual) // suponiendo ajustas backend para validar antigua
-    .subscribe({
-      next: () => {
-        // 2) Si pasa, vuelvo a llamar con la nueva
-        this.usuarioService
-          .cambiarContrasena(this.usuario!.id, this.nuevaContrasena)
-          .subscribe(() => {
-            this.mensajeExito = 'Contraseña actualizada';
-            this.cerrarModal();
-            this.nuevaContrasena = '';
-            this.contrasenaActual = '';
-            setTimeout(() => this.mensajeExito = null, 2000);
-          });
-      },
-      error: () => {
-        this.mensajeError = 'Contraseña actual incorrecta';
-      }
-    });
-}
-  
+
+  private validarPassword(pass: string): boolean {
+    const regex =
+      /^(?=.*[A-Z])(?=.*\d)(?=.*[!""#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~])[A-Za-z\d!""#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]{8,20}$/;
+    return regex.test(pass);
+  }
+
+
+  // Extiende guardarContrasena para validar la anterior
+  guardarContrasena(event: MouseEvent) {
+    event.stopPropagation();
+
+    if (!this.nuevaContrasena || !this.contrasenaActual) {
+      this.mensajeError = 'Completa ambos campos.';
+      return;
+    }
+
+    if (!this.validarPassword(this.nuevaContrasena)) {
+      this.mensajeError = 'La nueva contraseña no cumple con los requisitos.';
+      return;
+    }
+
+    this.usuarioService
+      .cambiarContrasena(this.usuario!.id, this.contrasenaActual, this.nuevaContrasena)
+      .subscribe({
+        next: () => {
+          this.mensajeError = null;
+          this.mensajeExito = 'Contraseña actualizada correctamente';
+          this.contrasenaActual = '';
+          this.nuevaContrasena = '';
+          this.modalTipo = null;
+          this.mostrarOpciones = false;  
+          setTimeout(() => {
+            this.mensajeExito = null;
+          }, 2500);
+        },
+        error: (err) => {
+          this.mensajeError = err.status === 401
+            ? 'Contraseña actual incorrecta'
+            : 'Error al actualizar contraseña';
+          this.modalTipo = 'cambiarContrasena';
+          this.mostrarOpciones = true; 
+        }
+      });
+  }
 }
