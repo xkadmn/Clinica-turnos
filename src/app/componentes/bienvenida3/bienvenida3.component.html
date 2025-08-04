@@ -1,5 +1,3 @@
-<p class="text-start">PRINCIPAL ADMINISTRADOR</p>
-
 <div class="container mt-4">
     <h1 class="text-start">Bienvenido, {{ usuarioService.usuarioLogueado.nombre }} {{ usuarioService.usuarioLogueado.apellido }}</h1>
     <hr>
@@ -7,7 +5,7 @@
     <!-- Navegación entre secciones -->
     <div class="d-flex justify-content-start mb-3">
       <button class="btn btn-primary me-2" (click)="mostrarSeccion('medicos')">Aprobar Médicos</button>
-      <button class="btn btn-secondary me-2" (click)="mostrarSeccion('pacientes')">Aprobar Pacientes</button>
+      <button class="btn btn-secondary me-2" (click)="mostrarSeccion('usuarios')">Usuarios</button>
       <button class="btn btn-secondary" (click)="mostrarSeccion('estadisticas')">Estadísticas</button>
     </div>
 
@@ -18,9 +16,42 @@
                 <app-aprobarmedicos></app-aprobarmedicos>
             </ng-container>
 
-            <ng-container *ngIf="seccionActual === 'pacientes'">
-                <!--  <app-aprobarpacientes></app-aprobarpacientes>-->
-            </ng-container>
+<ng-container *ngIf="seccionActual === 'usuarios'">
+  <div class="mb-3 d-flex">
+    <label class="me-2 align-self-center">Filtrar por tipo:</label>
+    <select class="form-select w-auto" [(ngModel)]="filtroTipoUsuario" (change)="filtrarUsuarios()">
+      <option value="">Todos</option>
+      <option value="1">Paciente</option>
+      <option value="2">Medico</option>
+      <option value="3">Administrador</option>
+    </select>
+  </div>
+
+  <table class="table table-modern table-bordered">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Usuario</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Mail</th>
+        <th>Tipo</th>
+        <th>Aprobado</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let u of usuariosFiltrados">
+        <td>{{ u.id }}</td>
+        <td>{{ u.usuario }}</td>
+        <td>{{ u.nombre }}</td>
+        <td>{{ u.apellido }}</td>
+        <td>{{ u.mail }}</td>
+        <td>{{ u.tipo }}</td>
+        <td>{{ u.aprobado ? 'Sí' : 'No' }}</td>
+      </tr>
+    </tbody>
+  </table>
+</ng-container>
 
             <ng-container *ngIf="seccionActual === 'estadisticas'">
                 <app-estadisticas-admin></app-estadisticas-admin>

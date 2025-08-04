@@ -226,6 +226,11 @@ actualizarPerfil(perfil: Perfil): Observable<any> {
 actualizarPerfilConFoto(fd: FormData): Observable<any> {
   return this.http.put(`${this.apiurl}/perfil/${this.usuarioLogueado.id}`, fd);
 }
+
+public getTodosUsuarios(): Observable<User[]> {
+  return this.http.get<User[]>(`${this.apiurl}/usuarios`);
+}
+
   
 
   public cambiarContrasena(userId: number, nuevaContrasena: string): Observable<any> {
